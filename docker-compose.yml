@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    # volumes:
+    #   - db_data:/var/lib/postgresql/data  ← descomente quando quiser persistir
+
+  web:
+    build: .
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+# volumes:
+#   db_data:  ← descomente junto com o de cima
