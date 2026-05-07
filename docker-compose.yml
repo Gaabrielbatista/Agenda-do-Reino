@@ -7,7 +7,7 @@ services:
     ports:
       - "5432:5432"
     # volumes:
-    #   - db_data:/var/lib/postgresql/data  ← descomente quando quiser persistir
+    #   - db_data:/var/lib/postgresql/data
 
   web:
     build: .
@@ -18,8 +18,10 @@ services:
       - .:/app
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL_DOCKER}
     depends_on:
       - db
 
 # volumes:
-#   db_data:  ← descomente junto com o de cima
+#   db_data:
