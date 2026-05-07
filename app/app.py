@@ -3,13 +3,13 @@ from app.db.database import init_db
 
 def create_app():
     app = Flask(__name__)
-    
-    # Inicializa o banco
     init_db(app)
     
-    # Registra blueprints (rotas) aqui futuramente
+    # Blueprints
     # from app.controllers.event_controller import event_bp
     # app.register_blueprint(event_bp)
+
+    from app.models import usuario, evento_normal, evento_recorrente
 
     return app
 
