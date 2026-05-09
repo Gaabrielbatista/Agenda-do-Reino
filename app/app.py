@@ -6,10 +6,10 @@ def create_app():
     init_db(app)
     
     # Blueprints
-    # from app.controllers.event_controller import event_bp
-    # app.register_blueprint(event_bp)
+    from app.controllers.evento_normal_controller import evento_normal_bp
+    app.register_blueprint(evento_normal_bp)
 
-    from app.models import usuario, evento_normal, evento_recorrente
+    app.json.sort_keys = False
 
     return app
 
