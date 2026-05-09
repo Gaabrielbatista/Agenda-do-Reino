@@ -8,9 +8,7 @@ def create_app():
     # Blueprints
     from app.controllers.evento_normal_controller import evento_normal_bp
     app.register_blueprint(evento_normal_bp)
-
-    from app.models import usuario, evento_normal, evento_recorrente
-
+    
     return app
 
 if __name__ == '__main__':
