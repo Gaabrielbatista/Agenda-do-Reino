@@ -8,7 +8,9 @@ def create_app():
     # Blueprints
     from app.controllers.evento_normal_controller import evento_normal_bp
     app.register_blueprint(evento_normal_bp)
-    
+
+    app.json.sort_keys = False
+
     return app
 
 if __name__ == '__main__':
