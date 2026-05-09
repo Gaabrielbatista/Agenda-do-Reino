@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, app
 from app.db.database import init_db
 
 def create_app():
@@ -8,6 +8,9 @@ def create_app():
     # Blueprints
     from app.controllers.evento_normal_controller import evento_normal_bp
     app.register_blueprint(evento_normal_bp)
+    
+    from app.controllers.evento_recorrente_controller import evento_recorrente_bp
+    app.register_blueprint(evento_recorrente_bp)
 
     app.json.sort_keys = False
 
