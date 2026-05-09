@@ -12,6 +12,7 @@ def _serialize_evento(evento):
         'data_inicio': evento.data_inicio.isoformat() if evento.data_inicio else None,
         'data_fim': evento.data_fim.isoformat() if evento.data_fim else None,
         'status': evento.status.value,
+        'criado_por': evento.criado_por,
     }
 
 @evento_normal_bp.route('/eventos/normais', methods=['GET'])
