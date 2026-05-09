@@ -1,0 +1,28 @@
+from app.repositories.evento_recorrente_repository import EventoRecorrenteRepository
+
+
+class EventoRecorrenteService:
+    def __init__(self):
+        self.repository = EventoRecorrenteRepository()
+
+    def get_all(self):
+        return self.repository.get_all()
+
+    def get_by_id(self, id):
+        return self.repository.get_by_id(id)
+
+    def create(self, dados):
+        return self.repository.create(dados)
+
+    def update(self, id, dados):
+        evento = self.repository.get_by_id(id)
+        if not evento:
+            return None
+        return self.repository.update(evento, dados)
+
+    def delete(self, id) -> bool:
+        evento = self.repository.get_by_id(id)
+        if not evento:
+            return False
+        self.repository.delete(evento)
+        return True
