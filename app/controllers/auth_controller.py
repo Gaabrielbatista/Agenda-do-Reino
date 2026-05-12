@@ -1,20 +1,19 @@
 import bcrypt
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, g
 
 from app.models.usuario import Usuario
 from app.utils.auth import gerar_token
+from app.utils.validation import validate_body
+from app.schemas import LoginSchema
 
 auth_bp = Blueprint('auth', __name__)
 
 
 @auth_bp.route('/auth/login', methods=['POST'])
+@validate_body(LoginSchema)
 def login():
-    dados = request.get_json()
-    if not dados.get('email'):
-        return jsonify({'error': 'email é obrigatório'}), 400
-    if not dados.get('senha'):
-        return jsonify({'error': 'senha é obrigatório'}), 400
+    dados = g.validated_data
 
     usuario = Usuario.query.filter_by(email=dados['email'].lower().strip()).first()
 

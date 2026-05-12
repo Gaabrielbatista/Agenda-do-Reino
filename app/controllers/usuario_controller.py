@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, g
 from app.services.usuario_service import UsuarioService
 from app.utils.auth import requer_auth, requer_admin
+from app.utils.validation import validate_body
+from app.schemas import UsuarioCreateSchema, UsuarioUpdateSchema
 
 usuario_bp = Blueprint('usuario', __name__)
 service = UsuarioService()
@@ -33,18 +35,10 @@ def get_by_id(id):
 
 @usuario_bp.route('/usuarios', methods=['POST'])
 @requer_admin
+@validate_body(UsuarioCreateSchema)
 def create():
-    dados = request.get_json()
-    if not dados.get('nome'):
-        return jsonify({'error': 'nome é obrigatório'}), 400
-    if not dados.get('email'):
-        return jsonify({'error': 'email é obrigatório'}), 400
-    if not dados.get('senha'):
-        return jsonify({'error': 'senha é obrigatório'}), 400
-    if not dados.get('tipo'):
-        return jsonify({'error': 'tipo é obrigatório'}), 400
     try:
-        usuario = service.create(dados)
+        usuario = service.create(g.validated_data)
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     return jsonify(_serialize_usuario(usuario)), 201
@@ -52,12 +46,10 @@ def create():
 
 @usuario_bp.route('/usuarios/<int:id>', methods=['PUT'])
 @requer_admin
+@validate_body(UsuarioUpdateSchema)
 def update(id):
-    dados = request.get_json()
-    if not dados:
-        return jsonify({'error': 'Body JSON obrigatório'}), 400
     try:
-        usuario = service.update(id, dados)
+        usuario = service.update(id, g.validated_data)
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     if not usuario:
