@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.services.usuario_service import UsuarioService
+from app.utils.auth import requer_auth, requer_admin
 
 usuario_bp = Blueprint('usuario', __name__)
 service = UsuarioService()
@@ -15,12 +16,14 @@ def _serialize_usuario(usuario):
 
 
 @usuario_bp.route('/usuarios', methods=['GET'])
+@requer_auth
 def get_all():
     usuarios = service.get_all()
     return jsonify([_serialize_usuario(u) for u in usuarios])
 
 
 @usuario_bp.route('/usuarios/<int:id>', methods=['GET'])
+@requer_auth
 def get_by_id(id):
     usuario = service.get_by_id(id)
     if not usuario:
@@ -29,6 +32,7 @@ def get_by_id(id):
 
 
 @usuario_bp.route('/usuarios', methods=['POST'])
+@requer_admin
 def create():
     dados = request.get_json()
     if not dados.get('nome'):
@@ -47,6 +51,7 @@ def create():
 
 
 @usuario_bp.route('/usuarios/<int:id>', methods=['PUT'])
+@requer_admin
 def update(id):
     dados = request.get_json()
     if not dados:
@@ -61,6 +66,7 @@ def update(id):
 
 
 @usuario_bp.route('/usuarios/<int:id>', methods=['DELETE'])
+@requer_admin
 def delete(id):
     deletado = service.delete(id)
     if not deletado:

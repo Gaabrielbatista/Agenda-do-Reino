@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.services.evento_normal_service import EventoNormalService
+from app.utils.auth import requer_auth, requer_admin
 
 evento_normal_bp = Blueprint('evento_normal', __name__)
 service = EventoNormalService()
@@ -16,11 +17,13 @@ def _serialize_evento(evento):
     }
 
 @evento_normal_bp.route('/eventos/normais', methods=['GET'])
+@requer_auth
 def get_all():
     eventos = service.get_all()
     return jsonify([_serialize_evento(e) for e in eventos])
 
 @evento_normal_bp.route('/eventos/normais/<int:id>', methods=['GET'])
+@requer_auth
 def get_by_id(id):
     evento = service.get_by_id(id)
     if not evento:
@@ -28,6 +31,7 @@ def get_by_id(id):
     return jsonify(_serialize_evento(evento))
 
 @evento_normal_bp.route('/eventos/normais', methods=['POST'])
+@requer_admin
 def create():
     dados = request.get_json()
     if not dados.get('titulo'):
@@ -43,6 +47,7 @@ def create():
     return jsonify(_serialize_evento(evento)), 201
 
 @evento_normal_bp.route('/eventos/normais/<int:id>', methods=['PUT'])
+@requer_admin
 def update(id):
     dados = request.get_json()
     if not dados:
@@ -56,6 +61,7 @@ def update(id):
     return jsonify(_serialize_evento(evento))
 
 @evento_normal_bp.route('/eventos/normais/<int:id>', methods=['DELETE'])
+@requer_admin
 def delete(id):
     deletado = service.delete(id)
     if not deletado:

@@ -10,12 +10,13 @@ def create_app():
     from app.controllers.evento_recorrente_controller import evento_recorrente_bp
     from app.controllers.usuario_controller import usuario_bp
     from app.controllers.agenda_controller import agenda_bp
-
+    from app.controllers.auth_controller import auth_bp
 
     app.register_blueprint(evento_normal_bp)
     app.register_blueprint(evento_recorrente_bp)
     app.register_blueprint(usuario_bp)
     app.register_blueprint(agenda_bp)
+    app.register_blueprint(auth_bp)
 
     app.json.sort_keys = False
 
