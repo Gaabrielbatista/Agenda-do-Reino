@@ -12,7 +12,7 @@ EXPIRACAO_HORAS = 24
 
 def gerar_token(usuario_id: int, tipo: str) -> str:
     payload = {
-        'sub': usuario_id,
+        'sub': str(usuario_id),
         'tipo': tipo,
         'exp': datetime.now(timezone.utc) + timedelta(hours=EXPIRACAO_HORAS),
         'iat': datetime.now(timezone.utc),
@@ -43,7 +43,7 @@ def requer_auth(f):
         if erro:
             return jsonify({'error': erro}), 401
         # Disponibiliza o payload para a rota via flask.g
-        g.usuario_id = payload['sub']
+        g.usuario_id = int(payload['sub'])
         g.usuario_tipo = payload['tipo']
         return f(*args, **kwargs)
     return decorated
@@ -58,7 +58,7 @@ def requer_admin(f):
             return jsonify({'error': erro}), 401
         if payload['tipo'].upper() != 'ADMIN':
             return jsonify({'error': 'Acesso restrito a administradores'}), 403
-        g.usuario_id = payload['sub']
+        g.usuario_id = int(payload['sub'])
         g.usuario_tipo = payload['tipo']
         return f(*args, **kwargs)
     return decorated
