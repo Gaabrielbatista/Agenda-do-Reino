@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app.services.evento_recorrente_service import EventoRecorrenteService
+from app.utils.auth import requer_auth, requer_admin
 
 evento_recorrente_bp = Blueprint('evento_recorrente', __name__)
 service = EventoRecorrenteService()
@@ -22,12 +23,14 @@ def _serialize_evento(evento):
 
 
 @evento_recorrente_bp.route('/eventos/recorrentes', methods=['GET'])
+@requer_auth
 def get_all():
     eventos = service.get_all()
     return jsonify([_serialize_evento(e) for e in eventos])
 
 
 @evento_recorrente_bp.route('/eventos/recorrentes/<int:id>', methods=['GET'])
+@requer_auth
 def get_by_id(id):
     evento = service.get_by_id(id)
     if not evento:
@@ -36,6 +39,7 @@ def get_by_id(id):
 
 
 @evento_recorrente_bp.route('/eventos/recorrentes', methods=['POST'])
+@requer_admin
 def create():
     dados = request.get_json()
     if not dados.get('titulo'):
@@ -54,6 +58,7 @@ def create():
 
 
 @evento_recorrente_bp.route('/eventos/recorrentes/<int:id>', methods=['PUT'])
+@requer_admin
 def update(id):
     dados = request.get_json()
     if not dados:
@@ -68,6 +73,7 @@ def update(id):
 
 
 @evento_recorrente_bp.route('/eventos/recorrentes/<int:id>', methods=['DELETE'])
+@requer_admin
 def delete(id):
     deletado = service.delete(id)
     if not deletado:
