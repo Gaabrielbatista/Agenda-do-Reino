@@ -1,4 +1,4 @@
-from flask import Flask, app
+from flask import Flask
 from app.db.database import init_db
 
 def create_app():
