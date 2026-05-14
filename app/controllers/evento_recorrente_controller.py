@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, g
 from app.services.evento_recorrente_service import EventoRecorrenteService
 from app.utils.auth import requer_auth, requer_admin
+from app.utils.validation import validate_body
+from app.schemas import EventoRecorrenteCreateSchema, EventoRecorrenteUpdateSchema
 
 evento_recorrente_bp = Blueprint('evento_recorrente', __name__)
 service = EventoRecorrenteService()
@@ -40,18 +42,10 @@ def get_by_id(id):
 
 @evento_recorrente_bp.route('/eventos/recorrentes', methods=['POST'])
 @requer_admin
+@validate_body(EventoRecorrenteCreateSchema)
 def create():
-    dados = request.get_json()
-    if not dados.get('titulo'):
-        return jsonify({'error': 'titulo é obrigatório'}), 400
-    if dados.get('dia_semana') is None:
-        return jsonify({'error': 'dia_semana é obrigatório'}), 400
-    if not dados.get('hora_inicio'):
-        return jsonify({'error': 'hora_inicio é obrigatório'}), 400
-    if not dados.get('criado_por'):
-        return jsonify({'error': 'criado_por é obrigatório'}), 400
     try:
-        evento = service.create(dados)
+        evento = service.create(g.validated_data)
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     return jsonify(_serialize_evento(evento)), 201
@@ -59,12 +53,10 @@ def create():
 
 @evento_recorrente_bp.route('/eventos/recorrentes/<int:id>', methods=['PUT'])
 @requer_admin
+@validate_body(EventoRecorrenteUpdateSchema)
 def update(id):
-    dados = request.get_json()
-    if not dados:
-        return jsonify({'error': 'Body JSON obrigatório'}), 400
     try:
-        evento = service.update(id, dados)
+        evento = service.update(id, g.validated_data)
     except ValueError as e:
         return jsonify({'error': str(e)}), 400
     if not evento:
