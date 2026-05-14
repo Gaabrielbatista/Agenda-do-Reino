@@ -6,7 +6,7 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 
 from app.db.database import db
-from app.models import Usuario, EventoNormal, EventoRecorrente
+from app.models import Usuario, EventoNormal, EventoRecorrente, EventoExcecao
 
 load_dotenv()
 

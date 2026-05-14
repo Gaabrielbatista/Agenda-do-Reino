@@ -8,4 +8,4 @@ def init_db(app):
     app.config.from_object(Config)
     db.init_app(app)
     
-    print("Banco configurado com sucesso!")
+    print("Banco configurado!")
