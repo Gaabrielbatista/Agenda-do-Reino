@@ -1,5 +1,3 @@
-# tests/conftest.py - VERSÃO FINAL CORRIGIDA
-
 import pytest
 from datetime import time
 
@@ -9,9 +7,7 @@ from app.models.usuario import Usuario, UserType
 from app.models.evento_recorrente import EventoRecorrente
 
 
-# ---------------------------------------------------------------------------
 # App / DB
-# ---------------------------------------------------------------------------
 
 @pytest.fixture(scope="session")
 def app():
@@ -60,9 +56,7 @@ def client(app):
     return app.test_client()
 
 
-# ---------------------------------------------------------------------------
 # Objetos de domínio reutilizáveis
-# ---------------------------------------------------------------------------
 
 @pytest.fixture
 def admin():
