@@ -23,9 +23,7 @@ TERCA   = date(2025, 1, 7)
 QUARTA  = date(2025, 1, 8)
 
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 def add_excecao(**kwargs):
     exc = EventoExcecao(**kwargs)
@@ -41,9 +39,7 @@ def ocorrencias(evento, inicio, semanas=0, fim=None):
     return gerar_ocorrencias(evento, inicio, fim)
 
 
-# ---------------------------------------------------------------------------
 # Geração básica
-# ---------------------------------------------------------------------------
 
 class TestGeracaoBasica:
 
@@ -93,9 +89,7 @@ class TestGeracaoBasica:
         assert oc["excecao_id"] is None
 
 
-# ---------------------------------------------------------------------------
 # Cálculo do primeiro dia
-# ---------------------------------------------------------------------------
 
 class TestPrimeiroDia:
 
@@ -128,9 +122,7 @@ class TestPrimeiroDia:
         assert len(resultado) == 1
 
 
-# ---------------------------------------------------------------------------
 # Exceções: CANCELAMENTO
-# ---------------------------------------------------------------------------
 
 class TestCancelamento:
 
@@ -169,9 +161,7 @@ class TestCancelamento:
         assert len(resultado) == 1
 
 
-# ---------------------------------------------------------------------------
 # Exceções: REMARCAÇÃO
-# ---------------------------------------------------------------------------
 
 class TestRemarcacao:
 
@@ -234,9 +224,7 @@ class TestRemarcacao:
         assert oc.get("remarcado") is True
 
 
-# ---------------------------------------------------------------------------
 # Cenários combinados
-# ---------------------------------------------------------------------------
 
 class TestCenariosCombinados:
 
