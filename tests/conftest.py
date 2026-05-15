@@ -1,13 +1,4 @@
-"""
-Fixtures compartilhados para todos os testes.
-
-Estratégia:
-- `app` com escopo de sessão: cria o schema SQLite uma vez.
-- `clean_tables` autouse por função: apaga todas as linhas entre testes
-  sem recriar o schema (muito mais rápido).
-- Fixtures de objetos (admin, evento_rec_segunda…) têm escopo de função,
-  rodando após o clean, garantindo DB limpo a cada teste.
-"""
+# tests/conftest.py - VERSÃO FINAL CORRIGIDA
 
 import pytest
 from datetime import time
@@ -32,12 +23,16 @@ def app():
     flask_app = create_app(test_config={
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "SQLALCHEMY_ENGINE_OPTIONS": {"connect_args": {"check_same_thread": False}},
+        "SQLALCHEMY_ENGINE_OPTIONS": {
+            "connect_args": {"check_same_thread": False},
+        },
     })
 
     ctx = flask_app.app_context()
     ctx.push()
     _db.create_all()
+    
+    _db.session.expire_on_commit = False
 
     yield flask_app
 
@@ -46,7 +41,7 @@ def app():
 
 
 @pytest.fixture(autouse=True)
-def clean_tables(app):  # noqa: ARG001 — recebe app só para garantir ordem
+def clean_tables(app):  # noqa: ARG001
     """
     Apaga todas as linhas entre testes.
     Roda antes (setup vazio) e depois (teardown) de cada teste.
@@ -56,6 +51,8 @@ def clean_tables(app):  # noqa: ARG001 — recebe app só para garantir ordem
     for table in reversed(_db.metadata.sorted_tables):
         _db.session.execute(table.delete())
     _db.session.commit()
+    # Limpa o cache de objetos da sessão
+    _db.session.expunge_all()
 
 
 @pytest.fixture
