@@ -17,9 +17,7 @@ from app.models.evento_recorrente import EventoRecorrente
 from app.models.usuario import Usuario, UserType
 
 
-# ---------------------------------------------------------------------------
 # Helpers
-# ---------------------------------------------------------------------------
 
 def commit_and_refresh(obj):
     _db.session.add(obj)
@@ -28,9 +26,7 @@ def commit_and_refresh(obj):
     return obj
 
 
-# ---------------------------------------------------------------------------
 # Usuario
-# ---------------------------------------------------------------------------
 
 class TestCRUDUsuario:
 
@@ -81,9 +77,7 @@ class TestCRUDUsuario:
         assert admin.email != membro.email
 
 
-# ---------------------------------------------------------------------------
 # EventoNormal
-# ---------------------------------------------------------------------------
 
 class TestCRUDEventoNormal:
 
@@ -136,9 +130,7 @@ class TestCRUDEventoNormal:
         assert _db.session.get(EventoNormal, eid) is None
 
 
-# ---------------------------------------------------------------------------
 # EventoRecorrente
-# ---------------------------------------------------------------------------
 
 class TestCRUDEventoRecorrente:
 
@@ -188,9 +180,7 @@ class TestCRUDEventoRecorrente:
         assert _db.session.get(EventoRecorrente, eid) is None
 
 
-# ---------------------------------------------------------------------------
 # EventoExcecao
-# ---------------------------------------------------------------------------
 
 class TestCRUDEventoExcecao:
 
