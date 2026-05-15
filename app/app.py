@@ -1,9 +1,9 @@
 from flask import Flask
 from app.db.database import init_db
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
-    init_db(app)
+    init_db(app, test_config)
     
     # Blueprints
     from app.controllers.evento_normal_controller import evento_normal_bp
