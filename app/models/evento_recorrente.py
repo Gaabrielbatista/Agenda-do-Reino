@@ -20,6 +20,7 @@ class EventoRecorrente(db.Model):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     criador = relationship("Usuario", back_populates="eventos_recorrentes")
+    excecoes = relationship("EventoExcecao", back_populates="evento_recorrente", cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         return f"<EventoRecorrente id={self.id} titulo={self.titulo}>"
