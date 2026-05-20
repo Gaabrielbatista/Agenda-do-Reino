@@ -21,7 +21,6 @@ function logout() {
   router.push('/login')
 }
 
-// Função de teste unificada no script TypeScript
 async function testAPI() {
   try {
     const response = await api.get('/agenda?inicio=2026-05-01&fim=2026-05-31')
