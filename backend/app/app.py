@@ -1,8 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 from app.db.database import init_db
 
 def create_app(test_config=None):
     app = Flask(__name__)
+    CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
     init_db(app, test_config)
     
     # Blueprints

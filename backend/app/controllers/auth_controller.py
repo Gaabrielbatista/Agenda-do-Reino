@@ -7,6 +7,10 @@ from app.utils.auth import gerar_token
 from app.utils.validation import validate_body
 from app.schemas import LoginSchema
 
+
+# Gera UM hash falso válido na inicialização do módulo (executa apenas uma vez)
+DUMMY_HASH = bcrypt.hashpw(b'senha_falsa', bcrypt.gensalt()).decode('utf-8')
+
 auth_bp = Blueprint('auth', __name__)
 
 
@@ -19,8 +23,7 @@ def login():
 
     # Mesmo se o usuário não existir, compara o hash para evitar timing attack
     senha_bytes = dados['senha'].encode('utf-8')
-    hash_verificar = usuario.senha_hash.encode('utf-8') if usuario else b'$2b$12$invalido.hash.para.timing'
-
+    hash_verificar = usuario.senha_hash.encode('utf-8') if usuario else DUMMY_HASH.encode('utf-8')
     senha_valida = bcrypt.checkpw(senha_bytes, hash_verificar)
 
     if not usuario or not senha_valida:
