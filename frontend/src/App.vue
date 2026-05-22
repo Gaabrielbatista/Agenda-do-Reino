@@ -1,16 +1,25 @@
 <template>
-  <div>
-    <RouterView />
-  </div>
+  <RouterView />
 </template>
 
-<script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
-
-const authStore = useAuthStore()
-if (authStore.token) {
-  import('@/services/api').then(module => {
-    module.default.defaults.headers.common['Authorization'] = `Bearer ${authStore.token}`
-  })
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-</script>
+
+html, body {
+  height: 100%;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  height: 100%;
+}
+</style>
