@@ -1,21 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
-import DashboardView from '@/views/DashboardView.vue'
+import CalendarView from '@/views/CalendarView.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
-  {
-    path: '/login',
-    name: 'login',
-    component: LoginView,
-    meta: { requiresAuth: false }
-  },
-  {
-    path: '/',
-    name: 'dashboard',
-    component: DashboardView,
-    meta: { requiresAuth: true }
-  }
+  { path: '/login', name: 'login', component: LoginView, meta: { requiresAuth: false } },
+  { path: '/', name: 'calendar', component: CalendarView, meta: { requiresAuth: false } }
 ]
 
 const router = createRouter({
@@ -29,8 +19,6 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !isAuthenticated) {
     next('/login')
-  } else if (to.path === '/login' && isAuthenticated) {
-    next('/')
   } else {
     next()
   }

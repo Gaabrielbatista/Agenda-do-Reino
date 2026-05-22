@@ -17,13 +17,17 @@ export const useAuthStore = defineStore('auth', {
     async login(email: string, senha: string): Promise<boolean> {
       try {
         const response = await api.post('/auth/login', { email, senha })
-        this.token = response.data.token
-        this.user = response.data.usuario
-        localStorage.setItem('token', this.token!)
-        api.defaults.headers.common['Authorization'] = `Bearer ${this.token}`
-        return true
-      } catch (error) {
-        console.error('Erro no login:', error)
+        const token = response.data.token
+        const user = response.data.usuario
+        if (token && user) {
+          this.token = token
+          this.user = user
+          localStorage.setItem('token', token)
+          return true
+        }
+        return false
+      } catch (error: any) {
+        console.error('Login error:', error.response?.data || error.message)
         return false
       }
     },
@@ -31,7 +35,6 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.token = null
       localStorage.removeItem('token')
-      delete api.defaults.headers.common['Authorization']
     }
   }
 })
