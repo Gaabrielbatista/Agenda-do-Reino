@@ -1,5 +1,5 @@
 <template>
-  <div class="app-layout dark-theme">
+  <div :class="['app-layout', isDark ? 'dark-theme' : 'light-theme']">
     <aside :class="['sidebar', { collapsed: isCollapsed }]">
       <div class="sidebar-header">
         <button class="toggle-btn" @click="toggleSidebar">
@@ -24,7 +24,9 @@
           <i class="fas fa-calendar-day"></i>
           <span v-if="!isCollapsed">Dia</span>
         </button>
-        <div class="nav-divider" v-if="!isCollapsed">Conta</div>
+      </nav>
+
+      <div class="sidebar-footer">
         <button class="nav-item" @click="goToProfile">
           <i class="fas fa-user-circle"></i>
           <span v-if="!isCollapsed">Perfil</span>
@@ -33,24 +35,34 @@
           <i class="fas fa-sign-out-alt"></i>
           <span v-if="!isCollapsed">Sair</span>
         </button>
-      </nav>
+      </div>
     </aside>
 
     <main class="main-content">
       <div class="top-bar">
-        <h2>AgendaReino</h2>
-        <div class="user-info" v-if="authStore.token">
-          <span>{{ authStore.user?.nome || 'Usuário' }}</span>
+        <div class="top-bar-left">
+          <button @click="toggleTheme" class="theme-toggle-btn">
+            {{ isDark ? '☀️' : '🌙' }}
+          </button>
         </div>
-        <div v-else>
-          <router-link to="/login" class="login-link">Entrar</router-link>
+        <div class="top-bar-center">
+          <h2>AgendaReino</h2>
+        </div>
+        <div class="top-bar-right">
+          <div v-if="authStore.token" class="user-info-top">
+            <i class="fas fa-user-circle"></i>
+            <span>{{ authStore.user?.nome || 'Usuário' }}</span>
+            <span class="user-role-badge" :class="authStore.user?.tipo === 'admin' ? 'admin' : 'membro'">
+              {{ authStore.user?.tipo === 'admin' ? 'Admin' : 'Membro' }}
+            </span>
+          </div>
+          <div v-else>
+            <router-link to="/login" class="login-link">Entrar</router-link>
+          </div>
         </div>
       </div>
       <div class="calendar-container">
-        <FullCalendar
-          ref="fullCalendar"
-          :options="calendarOptions"
-        />
+        <FullCalendar ref="fullCalendar" :options="calendarOptions" />
       </div>
     </main>
 
@@ -74,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import FullCalendar from '@fullcalendar/vue3'
@@ -93,6 +105,21 @@ const fullCalendar = ref<any>(null)
 const isCollapsed = ref(false)
 const currentView = ref('dayGridMonth')
 const isAdmin = computed(() => authStore.user?.tipo === 'admin')
+
+// Theme handling
+const isDark = ref(true)
+
+function toggleTheme() {
+  isDark.value = !isDark.value
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
+onMounted(() => {
+  const saved = localStorage.getItem('theme')
+  if (saved) {
+    isDark.value = saved === 'dark'
+  }
+})
 
 // Estados para modais
 const modalVisible = ref(false)
@@ -184,24 +211,53 @@ const logout = () => {
 </script>
 
 <style scoped>
-/* Layout geral estrutural */
+/* 1. Variáveis de Tema */
+.dark-theme {
+  --bg-page: #1e1e2f;
+  --bg-sidebar: #2d2d3a;
+  --bg-topbar: #2d2d3a;
+  --border-color: #3a3a4a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #aaa;
+  --hover-bg: #3a3a4a;
+  --btn-primary: #3b82f6;
+  --btn-primary-hover: #2563eb;
+}
+
+.light-theme {
+  --bg-page: #f3f4f6;
+  --bg-sidebar: #ffffff;
+  --bg-topbar: #ffffff;
+  --border-color: #e5e7eb;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --hover-bg: #e5e7eb;
+  --btn-primary: #3b82f6;
+  --btn-primary-hover: #2563eb;
+}
+
+/* 2. Layout Estrutural Principal */
 .app-layout {
   display: flex;
   height: 100vh;
-  width: 100%; /* Garante que ocupe a largura da janela inteira */
+  width: 100vw;
   overflow: hidden;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Sidebar - Responsável apenas pelo layout, as cores vêm do dark-theme.css */
+/* 3. Sidebar */
 .sidebar {
-  transition: width 0.3s ease;
-  width: 250px;
-  flex-shrink: 0; /* Impede que a barra lateral seja espremida */
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
+  justify-content: space-between;
+  transition: width 0.3s ease, background-color 0.3s;
+  width: 250px;
+  flex-shrink: 0;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   z-index: 10;
-  border-right: 1px solid #3a3a4a; /* Separação visual com a área principal */
 }
 
 .sidebar.collapsed {
@@ -223,10 +279,12 @@ const logout = () => {
 }
 
 .sidebar-nav {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 1rem 0.5rem;
+  overflow-x: hidden;
 }
 
 .nav-item {
@@ -243,7 +301,7 @@ const logout = () => {
   width: 100%;
   text-align: left;
   transition: background 0.2s;
-  white-space: nowrap; /* Evita que o texto quebre ao recolher a barra */
+  white-space: nowrap;
 }
 
 .nav-item i {
@@ -252,23 +310,32 @@ const logout = () => {
 }
 
 .nav-item:hover, .nav-item.active {
-  background-color: rgba(255, 255, 255, 0.1); /* Efeito hover genérico */
+  background-color: var(--hover-bg);
 }
 
 .nav-divider {
   font-size: 0.7rem;
   text-transform: uppercase;
-  color: #aaa;
+  color: var(--text-secondary);
   margin: 0.5rem 0 0.2rem 1rem;
   white-space: nowrap;
 }
 
-/* Área principal */
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 4. Área Principal e Top Bar */
 .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* O scroll deve ficar no calendário, não no main */
+  overflow: hidden;
 }
 
 .top-bar {
@@ -276,17 +343,85 @@ const logout = () => {
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1.5rem;
+  background-color: var(--bg-topbar);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s;
 }
 
-.top-bar h2 {
+.top-bar-left {
+  width: 100px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.top-bar-center {
+  flex: 1;
+  text-align: center;
+}
+
+.top-bar-center h2 {
   margin: 0;
   font-size: 1.5rem;
 }
 
-.user-info {
-  font-weight: bold;
+.top-bar-right {
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
+.user-info-top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(128, 128, 128, 0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+}
+
+.user-info-top i {
+  font-size: 1.2rem;
+  color: var(--btn-primary);
+}
+
+.user-role-badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+}
+
+.user-role-badge.admin {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.user-role-badge.membro {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.theme-toggle-btn {
+  background: var(--btn-primary);
+  border: none;
+  border-radius: 30px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  color: white;
+  font-size: 1.2rem;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--btn-primary-hover);
+}
+
+/* 5. Container do Calendário */
 .calendar-container {
   flex: 1;
   padding: 1rem;
@@ -294,7 +429,4 @@ const logout = () => {
   display: flex;
   flex-direction: column;
 }
-
-/* Nota: As customizações de cor do FullCalendar foram removidas daqui. 
-   Certifique-se de que o arquivo dark-theme.css está sendo importado no seu projeto. */
 </style>

@@ -10,7 +10,7 @@ interface Usuario {
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    user: null as Usuario | null,
+    user: (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user') as string) : null) as Usuario | null,
     token: localStorage.getItem('token') || null
   }),
   actions: {
@@ -22,6 +22,7 @@ export const useAuthStore = defineStore('auth', {
         if (token && user) {
           this.token = token
           this.user = user
+          localStorage.setItem('user', JSON.stringify(user))
           localStorage.setItem('token', token)
           return true
         }

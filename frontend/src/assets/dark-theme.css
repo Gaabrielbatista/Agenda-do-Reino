@@ -1,81 +1,35 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
 .dark-theme {
-  background-color: #1e1e2f;
-  color: #e0e0e0;
+  --bg-page: #1e1e2f;
+  --bg-card: #2d2d3a;
+  --bg-sidebar: #2d2d3a;
+  --bg-topbar: #2d2d3a;
+  --border-color: #3a3a4a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #aaa;
+  --input-bg: #1e1e2f;
+  --input-border: #3a3a4a;
+  --hover-bg: #3a3a4a;
+  --btn-primary: #3b82f6;
+  --btn-primary-hover: #2563eb;
 }
 
-.dark-theme .top-bar {
-  background-color: #2d2d3a;
-  border-bottom: 1px solid #3a3a4a;
-}
-.dark-theme .logo h2 {
-  color: #ffffff;
-}
-.dark-theme .user-name {
-  color: #dddddd;
-}
-.dark-theme .btn-new-event,
-.dark-theme .btn-login {
-  background-color: #3b82f6;
-}
-.dark-theme .btn-new-event:hover,
-.dark-theme .btn-login:hover {
-  background-color: #2563eb;
-}
-.dark-theme .btn-logout {
-  background-color: #ef4444;
-}
-
-/* FullCalendar – sobrescrita das cores principais */
+/* Customizações Globais do FullCalendar para Modo Escuro */
 .dark-theme .fc {
-  background-color: #2d2d3a;
-  border-color: #3a3a4a;
-  color: #e0e0e0;
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
 }
 .dark-theme .fc .fc-toolbar-title {
   color: #ffffff;
 }
 .dark-theme .fc .fc-button-primary {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
+  background-color: var(--btn-primary);
+  border-color: var(--btn-primary);
 }
 .dark-theme .fc .fc-button-primary:not(:disabled):hover {
-  background-color: #2563eb;
+  background-color: var(--btn-primary-hover);
 }
-.dark-theme .fc .fc-button-primary:disabled {
-  background-color: #4b5563;
-}
-.dark-theme .fc .fc-col-header-cell-cushion {
-  color: #e0e0e0;
-}
-.dark-theme .fc .fc-daygrid-day-number {
-  color: #e0e0e0;
-}
-.dark-theme .fc .fc-daygrid-day.fc-day-today {
-  background-color: #3a3a4a;
-}
-.dark-theme .fc .fc-daygrid-day-frame {
-  background-color: #2d2d3a;
-}
-.dark-theme .fc .fc-daygrid-day-events {
-  background-color: #2d2d3a;
-}
-.dark-theme .fc .fc-daygrid-event {
-  background-color: #3b82f6;
-  border-color: #3b82f6;
-  color: white;
-}
-.dark-theme .fc .fc-timegrid-slot {
-  background-color: #2d2d3a;
-}
-
-.dark-theme {
-  background-color: #1e1e2f;
-  color: #e0e0e0;
-  min-height: 100%;
+.dark-theme .fc .fc-col-header-cell {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
 }

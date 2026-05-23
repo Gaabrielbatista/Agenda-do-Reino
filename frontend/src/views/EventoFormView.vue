@@ -188,60 +188,40 @@ onMounted(() => {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #2d2d3a;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  color: #e0e0e0;
+  color: var(--text-primary);
+  transition: all 0.3s;
 }
+
 h1 {
   margin-top: 0;
-  color: white;
+  color: var(--text-primary);
 }
+
 .form-group {
   margin-bottom: 1rem;
 }
+
 label {
   display: block;
   margin-bottom: 0.3rem;
   font-weight: 500;
 }
+
 input, select, textarea {
   width: 100%;
   padding: 0.6rem;
   border-radius: 6px;
-  border: 1px solid #3a3a4a;
-  background: #1e1e2f;
-  color: #e0e0e0;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
 }
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.checkbox input {
-  width: auto;
-}
-.button-group {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-button {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-}
-button[type="submit"] {
-  background: #3b82f6;
-  color: white;
-}
-button[type="button"] {
-  background: #4b5563;
-  color: white;
-}
-.error {
-  color: #f87171;
-  margin-top: 1rem;
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--btn-primary);
 }
 </style>

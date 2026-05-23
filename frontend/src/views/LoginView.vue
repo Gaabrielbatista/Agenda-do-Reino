@@ -16,6 +16,7 @@
         </div>
 
         <button type="submit" :disabled="loading">Entrar com o sistema</button>
+        <button type="button" @click="guestLogin" class="guest-btn">Entrar como visitante</button>
         <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
         <div class="links">
           <a href="#" @click.prevent="forgotPassword">Esqueceu a senha?</a>
@@ -54,153 +55,110 @@ async function handleLogin() {
 function forgotPassword() {
   alert('Funcionalidade em breve. Contate o administrador para redefinir sua senha.')
 }
+
+import api from '@/services/api'
+
+async function guestLogin() {
+  loading.value = true
+  errorMsg.value = ''
+  try {
+    const response = await api.post('/auth/guest')
+    const token = response.data.token
+    const user = response.data.usuario
+    authStore.token = token
+    authStore.user = user
+    localStorage.setItem('token', token)
+    // Força o axios a usar o token
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    router.push('/')
+  } catch (err) {
+    errorMsg.value = 'Erro ao acessar modo visitante.'
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <style scoped>
 .login-container {
-  min-height: 100%;
   display: flex;
+  min-height: 100vh;
+  width: 100vw;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  padding: 0;
+  background-color: var(--bg-page);
+  transition: background-color 0.3s;
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   padding: 2rem;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 400px;
   text-align: center;
-  border: none; /* remove qualquer borda */
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .title {
   font-size: 2rem;
-  color: #1e3c72;
+  color: var(--btn-primary);
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
 .subtitle {
-  color: #4a627a;
+  color: var(--text-secondary);
   margin-bottom: 1.5rem;
   font-weight: 500;
-}
-
-.input-group {
-  text-align: left;
-  margin-bottom: 1rem;
 }
 
 label {
   display: block;
   margin-bottom: 0.3rem;
   font-weight: 500;
-  color: #1e3c72;
+  color: var(--text-primary);
 }
 
 input {
   width: 100%;
   padding: 0.7rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
   border-radius: 8px;
   font-size: 1rem;
-  transition: border 0.2s;
-  background: white;
+  transition: all 0.2s;
 }
 
 input:focus {
   outline: none;
-  border-color: #2a5298;
-  box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.2);
+  border-color: var(--btn-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 button {
   width: 100%;
   padding: 0.75rem;
-  background: #2a5298;
+  background: var(--btn-primary);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: background 0.2s;
 }
 
 button:hover:not(:disabled) {
-  background: #1e3c72;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.error {
-  color: #e74c3c;
-  margin-top: 0.8rem;
-  font-size: 0.9rem;
-}
-
-.links {
-  margin-top: 1rem;
+  background: var(--btn-primary-hover);
 }
 
 .links a {
-  color: #2a5298;
+  color: var(--btn-primary);
   text-decoration: none;
   font-size: 0.9rem;
-}
-
-.links a:hover {
-  text-decoration: underline;
-}
-
-/* Adicione este bloco no final do seu <style scoped> */
-
-/* Sobrescritas para o Tema Escuro */
-.dark-theme {
-  background-color: #1e1e2f; /* Fundo de toda a página de login */
-}
-
-.dark-theme .login-card {
-  background: #2d2d3a;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Sombra mais intensa para contraste no escuro */
-}
-
-.dark-theme .title {
-  color: #ffffff;
-}
-
-.dark-theme .subtitle,
-.dark-theme label {
-  color: #e0e0e0;
-}
-
-.dark-theme input {
-  background-color: #1e1e2f;
-  border: 1px solid #3a3a4a;
-  color: #e0e0e0;
-}
-
-.dark-theme input:focus {
-  border-color: #3b82f6; /* Azul de foco do seu tema escuro */
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-.dark-theme button {
-  background-color: #3b82f6; /* Botão segue o padrão do botão primário do calendário */
-}
-
-.dark-theme button:hover:not(:disabled) {
-  background-color: #2563eb;
-}
-
-.dark-theme .links a {
-  color: #60a5fa; /* Tom de azul mais claro para links no modo escuro */
 }
 </style>
