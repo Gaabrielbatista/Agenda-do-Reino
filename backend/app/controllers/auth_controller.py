@@ -40,3 +40,21 @@ def login():
             'tipo': usuario.tipo.value,
         }
     })
+
+@auth_bp.route('/auth/guest', methods=['POST'])
+def guest_login():
+    """
+    Gera token de acesso para visitante (modo leitura).
+    """
+    from app.utils.auth import gerar_token
+    # Usa um ID fixo (ex: 0) para visitante – não precisa existir no banco
+    token = gerar_token(0, 'visitante')
+    return jsonify({
+        'token': token,
+        'usuario': {
+            'id': 0,
+            'nome': 'Visitante',
+            'email': 'visitante@agenda.reino',
+            'tipo': 'visitante'
+        }
+    })
