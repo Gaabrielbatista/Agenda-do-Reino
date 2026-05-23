@@ -77,7 +77,7 @@
 
           <!-- Botões de ação (apenas admin) -->
           <div class="action-buttons" v-if="isAdmin">
-            <button class="btn-edit" @click="$emit('edit', evento.id, tipo)">✏️ Editar</button>
+            <button class="btn-edit" @click="close(); $emit('edit', evento.id, tipo)">✏️ Editar</button>
             <button class="btn-delete" @click="deleteEvent">🗑️ Excluir</button>
             <button v-if="tipo === 'recorrente'" class="btn-exceptions" @click="manageExceptions">
               ⚙️ Gerenciar Exceções
