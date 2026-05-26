@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-container dark-theme">
+  <div class="profile-container">
     <div class="profile-card">
       <div class="card-header">
         <button class="back-btn" @click="goBack" title="Voltar para a Agenda">
@@ -181,47 +181,105 @@ const handleUpdate = async () => {
 
 <style scoped>
 .profile-container {
-  min-height: 100vh;
-  background-color: var(--bg-page);
-  padding: 2rem;
-  color: var(--text-primary);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  transition: background-color 0.3s;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--text-primary);
+  font-size: 1.2rem;
+}
+
+.back-btn i {
+  pointer-events: none;
 }
 
 .profile-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
   padding: 2rem;
-  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   max-width: 500px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border: 1px solid var(--border-color);
 }
 
-input {
+.avatar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.avatar-icon {
+  font-size: 5rem; /* Ícone maior */
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-secondary);
+}
+
+.input-wrapper input {
   width: 100%;
-  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-  border: 1px solid var(--input-border);
+  padding-left: 2.8rem;
   background-color: var(--input-bg);
   color: var(--text-primary);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.2s ease;
 }
 
-input:focus {
-  outline: none;
-  border-color: var(--btn-primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-}
-
-input:disabled {
-  background-color: var(--bg-page);
-  border-color: var(--border-color);
+.input-wrapper input::placeholder {
   color: var(--text-secondary);
+}
+.btn-save {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  background: var(--btn-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-save:hover {
+  background: var(--btn-primary-hover);
+}
+
+.btn-save:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+}
+
+.info-alert {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>

@@ -1,5 +1,5 @@
  <template>
-  <div class="exceptions-container dark-theme">
+  <div class="exceptions-container">
     <div class="exceptions-card">
       <div class="card-header">
         <button class="back-btn" @click="goBack" title="Voltar para a Agenda">
@@ -344,4 +344,22 @@ input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--btn-primary);
 }
+
+/* Estilos Estruturais das Exceções */
+.card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+.back-btn { background: none; border: none; color: var(--text-primary); font-size: 1.2rem; cursor: pointer; }
+.event-details { margin-bottom: 2rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px; }
+.main-layout { display: flex; flex-direction: column; gap: 2rem; }
+.form-group { margin-bottom: 1.2rem; }
+.helper-text { font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 0.3rem; }
+.btn-submit { width: 100%; padding: 0.8rem; background: var(--btn-primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s;}
+.btn-submit:hover { background: var(--btn-primary-hover); }
+.exc-card { border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: var(--bg-page); }
+.exc-badge-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
+.exc-badge { padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+.badge-cancel { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.badge-resched { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.btn-delete-exc { background: none; border: none; color: #ef4444; cursor: pointer; }
+.empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
+.empty-state i { font-size: 2rem; margin-bottom: 0.5rem; }
 </style>

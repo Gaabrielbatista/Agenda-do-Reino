@@ -1,25 +1,16 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { initTheme } from '@/composables/useTheme'
+
+onMounted(() => {
+  initTheme()
+})
+</script>
+
 <template>
-  <RouterView />
+  <router-view />
 </template>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  background: linear-gradient(135deg, #1e3c72, #2a5298);
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-#app {
-  height: 100%;
-}
+/* Se houver algum estilo antigo aqui, pode limpar se já estiver nos arquivos base.css */
 </style>

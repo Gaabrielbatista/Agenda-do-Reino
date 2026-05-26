@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container dark-theme">
+  <div class="login-container">
     <div class="login-card">
       <h1 class="title">AgendaReino</h1>
       <h2 class="subtitle">Login</h2>
@@ -81,84 +81,99 @@ async function guestLogin() {
 
 <style scoped>
 .login-container {
-  display: flex;
   min-height: 100vh;
-  width: 100vw;
+  background-color: var(--color-bg-page);
+  display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--bg-page);
-  transition: background-color 0.3s;
 }
 
 .login-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 2.5rem; /* Mais espaçamento interno */
+  border-radius: 16px; /* Bordas mais arredondadas */
   width: 100%;
   max-width: 400px;
-  text-align: center;
-  transition: background-color 0.3s, border-color 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* Sombra suave */
+  border: 1px solid var(--border-color);
 }
 
 .title {
-  font-size: 2rem;
-  color: var(--btn-primary);
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+  color: var(--text-primary); /* Ou uma cor de destaque sutil */
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+  font-weight: 700;
 }
 
 .subtitle {
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  font-weight: 500;
+  margin-bottom: 2rem;
 }
 
-label {
+.input-group {
+  margin-bottom: 1.25rem;
+}
+
+.input-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
   display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 500;
-  color: var(--text-primary);
 }
 
-input {
-  width: 100%;
-  padding: 0.7rem;
-  border: 1px solid var(--input-border);
-  background-color: var(--input-bg);
-  color: var(--text-primary);
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: all 0.2s;
-}
-
-input:focus {
-  outline: none;
-  border-color: var(--btn-primary);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-button {
+.input-group input {
   width: 100%;
   padding: 0.75rem;
-  background: var(--btn-primary);
-  color: white;
-  border: none;
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
+  color: var(--text-primary);
+  transition: border-color 0.3s;
 }
 
-button:hover:not(:disabled) {
+.input-group input:focus {
+  border-color: var(--btn-primary);
+  outline: none;
+}
+
+/* Botões com espaçamento visual */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--btn-primary);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+
+button[type="submit"]:hover {
   background: var(--btn-primary-hover);
 }
 
-.links a {
-  color: var(--btn-primary);
-  text-decoration: none;
-  font-size: 0.9rem;
+button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+.guest-btn {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  border: 1px solid var(--border-color); /* Estilo outline */
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.guest-btn:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
 }
 </style>

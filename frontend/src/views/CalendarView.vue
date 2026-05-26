@@ -1,5 +1,5 @@
 <template>
-  <div :class="['app-layout', isDark ? 'dark-theme' : 'light-theme']">
+  <div class="app-layout">
     <aside :class="['sidebar', { collapsed: isCollapsed }]">
       <div class="sidebar-header">
         <button class="toggle-btn" @click="toggleSidebar">
@@ -8,7 +8,7 @@
       </div>
       <nav class="sidebar-nav">
         <button v-if="isAdmin" class="nav-item" @click="openCreateModal">
-          <i class="fas fa-plus-circle"></i>
+          <i class="fas fa-calendar-plus"></i>
           <span v-if="!isCollapsed">Novo Evento</span>
         </button>
         <div class="nav-divider" v-if="!isCollapsed">Visualização</div>
@@ -32,7 +32,7 @@
           <span v-if="!isCollapsed">Perfil</span>
         </button>
         <button class="nav-item" @click="logout">
-          <i class="fas fa-sign-out-alt"></i>
+          <i class="fa-solid fa-right-from-bracket"></i>
           <span v-if="!isCollapsed">Sair</span>
         </button>
       </div>
@@ -42,7 +42,7 @@
       <div class="top-bar">
         <div class="top-bar-left">
           <button @click="toggleTheme" class="theme-toggle-btn">
-            {{ isDark ? '☀️' : '🌙' }}
+            <i :class="isDark ? 'fas fa-moon' : 'fas fa-sun'"></i>
           </button>
         </div>
         <div class="top-bar-center">
@@ -99,27 +99,14 @@ import { useAuthStore } from '@/stores/auth'
 import EventModal from '@/components/EventModal.vue'
 import EventFormModal from '@/components/EventFormModal.vue'
 
+import { isDark, toggleTheme } from '@/composables/useTheme'
+
 const router = useRouter()
 const authStore = useAuthStore()
 const fullCalendar = ref<any>(null)
 const isCollapsed = ref(false)
 const currentView = ref('dayGridMonth')
 const isAdmin = computed(() => authStore.user?.tipo === 'admin')
-
-// Theme handling
-const isDark = ref(true)
-
-function toggleTheme() {
-  isDark.value = !isDark.value
-  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
-}
-
-onMounted(() => {
-  const saved = localStorage.getItem('theme')
-  if (saved) {
-    isDark.value = saved === 'dark'
-  }
-})
 
 // Estados para modais
 const modalVisible = ref(false)
@@ -130,21 +117,19 @@ const formModalVisible = ref(false)
 const editingEventId = ref<number | null>(null)
 const editingEventType = ref<'normal' | 'recorrente' | null>(null)
 
-// Abrir modal de criação (novo evento)
+// Funções de apoio
 const openCreateModal = () => {
   editingEventId.value = null
   editingEventType.value = null
   formModalVisible.value = true
 }
 
-// Abrir modal de edição (a partir do EventModal)
 const openEditModal = (id: number, type: 'normal' | 'recorrente') => {
   editingEventId.value = id
   editingEventType.value = type
   formModalVisible.value = true
 }
 
-// Buscar eventos para o calendário
 const fetchEvents = async (info: any) => {
   try {
     const startStr = info.start.toISOString().slice(0, 10)
@@ -211,32 +196,7 @@ const logout = () => {
 </script>
 
 <style scoped>
-/* 1. Variáveis de Tema */
-.dark-theme {
-  --bg-page: #1e1e2f;
-  --bg-sidebar: #2d2d3a;
-  --bg-topbar: #2d2d3a;
-  --border-color: #3a3a4a;
-  --text-primary: #e0e0e0;
-  --text-secondary: #aaa;
-  --hover-bg: #3a3a4a;
-  --btn-primary: #3b82f6;
-  --btn-primary-hover: #2563eb;
-}
-
-.light-theme {
-  --bg-page: #f3f4f6;
-  --bg-sidebar: #ffffff;
-  --bg-topbar: #ffffff;
-  --border-color: #e5e7eb;
-  --text-primary: #1f2937;
-  --text-secondary: #6b7280;
-  --hover-bg: #e5e7eb;
-  --btn-primary: #3b82f6;
-  --btn-primary-hover: #2563eb;
-}
-
-/* 2. Layout Estrutural Principal */
+/* Layout Estrutural Principal */
 .app-layout {
   display: flex;
   height: 100vh;
@@ -247,7 +207,7 @@ const logout = () => {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* 3. Sidebar */
+/* Sidebar */
 .sidebar {
   display: flex;
   flex-direction: column;
@@ -330,7 +290,7 @@ const logout = () => {
   border-top: 1px solid var(--border-color);
 }
 
-/* 4. Área Principal e Top Bar */
+/* Área Principal e Top Bar */
 .main-content {
   flex-grow: 1;
   display: flex;
@@ -361,7 +321,10 @@ const logout = () => {
 
 .top-bar-center h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
 }
 
 .top-bar-right {
@@ -402,31 +365,36 @@ const logout = () => {
   color: #34d399;
 }
 
+/* Melhorando o botão de alternar tema */
 .theme-toggle-btn {
-  background: var(--btn-primary);
-  border: none;
-  border-radius: 30px;
-  width: 36px;
-  height: 36px;
+  background: var(--bg-sidebar);
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  color: white;
+  color: var(--text-primary);
   font-size: 1.2rem;
-  transition: 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.3s, transform 0.2s;
 }
 
 .theme-toggle-btn:hover {
-  background: var(--btn-primary-hover);
+  background: var(--hover-bg);
 }
 
-/* 5. Container do Calendário */
+/* Container do Calendário */
 .calendar-container {
   flex: 1;
   padding: 1rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.nav-item .fa-right-from-bracket {
+  color: var(--text-primary);
 }
 </style>

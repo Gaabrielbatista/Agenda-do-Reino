@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div v-if="visible" class="modal-overlay" @click.self="close">
-      <div class="modal-container">
+      <div class="modal-container" :class="{ 'dark-theme': isDark }">
         <div class="modal-header">
           <h3>{{ evento?.titulo || 'Carregando...' }}</h3>
           <button class="close-btn" @click="close">✕</button>
@@ -94,6 +94,7 @@ import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/services/api'
+import { isDark } from '@/composables/useTheme'
 
 const props = defineProps<{
   visible: boolean
@@ -217,9 +218,10 @@ watch(() => props.visible, (newVal) => {
   justify-content: center;
   z-index: 10000;
 }
+
 .modal-container {
-  background: #2d2d3a;
-  color: #e0e0e0;
+  background: var(--bg-card);
+  color: var(--text-primary);  /* <-- Mude de #e0e0e0 para var(--text-primary) */
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
@@ -227,54 +229,66 @@ watch(() => props.visible, (newVal) => {
   overflow-y: auto;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
+
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #3a3a4a;
+  border-bottom: 1px solid var(--border-color); /* <-- Mude de #3a3a4a para var(--border-color) */
 }
+
 .modal-header h3 {
   margin: 0;
   font-size: 1.3rem;
 }
+
 .close-btn {
   background: none;
   border: none;
-  color: #aaa;
+  color: var(--text-secondary); /* <-- Mude de #aaa para var(--text-secondary) */
   font-size: 1.5rem;
   cursor: pointer;
 }
+
 .close-btn:hover {
-  color: white;
+  color: var(--text-primary); /* <-- Mude de white para var(--text-primary) */
 }
+
 .modal-body {
   padding: 1.5rem;
 }
+
 .info-row {
   margin-bottom: 0.8rem;
 }
+
 .info-section {
   margin-top: 1rem;
-  border-top: 1px solid #3a3a4a;
+  border-top: 1px solid var(--border-color); /* <-- Mude de #3a3a4a para var(--border-color) */
   padding-top: 1rem;
 }
+
 .info-section ul {
   margin: 0.5rem 0 0 1.2rem;
   padding-left: 0;
 }
+
 .info-section li {
   margin: 0.2rem 0;
 }
+
 .error {
   color: #f87171;
 }
+
 .action-buttons {
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
   justify-content: flex-end;
 }
+
 .btn-edit, .btn-delete, .btn-exceptions {
   padding: 0.4rem 0.8rem;
   border: none;
@@ -282,14 +296,17 @@ watch(() => props.visible, (newVal) => {
   cursor: pointer;
   font-weight: bold;
 }
+
 .btn-edit {
   background: #3b82f6;
   color: white;
 }
+
 .btn-delete {
   background: #ef4444;
   color: white;
 }
+
 .btn-exceptions {
   background: #10b981;
   color: white;

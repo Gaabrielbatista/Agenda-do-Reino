@@ -195,80 +195,169 @@ watch(() => props.visible, (newVal) => {
 </script>
 
 <style scoped>
-/* Mesmos estilos do EventModal, adapte se necessário */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
 }
+
 .modal-container {
-  background: #2d2d3a;
-  color: #e0e0e0;
+  background: var(--bg-card);
+  color: var(--text-primary);
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
   max-height: 80vh;
   overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
+
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid #3a3a4a;
+  border-bottom: 1px solid var(--border-color);
 }
+
 .close-btn {
   background: none;
   border: none;
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.close-btn:hover {
+  color: var(--text-primary);
+}
+
 .modal-body {
   padding: 1.5rem;
 }
+
 .form-group {
   margin-bottom: 1rem;
 }
+
 label {
   display: block;
   margin-bottom: 0.3rem;
+  font-weight: 500;
 }
-input, select, textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #3a3a4a;
-  background: #1e1e2f;
-  color: #e0e0e0;
-}
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+
 .button-group {
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
 }
+
 button[type="submit"] {
+  flex: 1;
+  padding: 0.75rem;
   background: #3b82f6;
+  background: var(--btn-primary, #3b82f6);
   color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
+
+button[type="submit"]:hover:not(:disabled) {
+  background: #2563eb;
+  background: var(--btn-primary-hover, #2563eb);
+}
+
 button[type="button"] {
+  flex: 0.5;
+  padding: 0.75rem;
   background: #4b5563;
   color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
 }
+
+button[type="button"]:hover {
+  opacity: 0.9;
+}
+
 .error {
   color: #f87171;
   margin-top: 1rem;
+}
+
+/* --- Substitua o final do seu CSS por isto --- */
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--btn-primary) !important;  /* <-- FORÇADO com !important */
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--btn-primary) !important;  /* <-- FORÇADO com !important */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* TEMA ESCURO - Ajuste do Select e Opções */
+:root.dark-theme select,
+body.dark-theme select {
+  background-color: #1e1e2f !important;
+  color: #e0e0e0 !important;
+}
+
+:root.dark-theme select option,
+body.dark-theme select option {
+  background-color: #2d2d3a !important;
+  color: #e0e0e0 !important;
+}
+
+:root.dark-theme select option:checked,
+body.dark-theme select option:checked {
+  background-color: #3b82f6 !important;
+  color: white !important;
+}
+
+/* TEMA ESCURO - Fundo azul escuro para TODOS os campos */
+:root.dark-theme input,
+:root.dark-theme select,
+:root.dark-theme textarea,
+:root.dark-theme input[type="datetime-local"],
+:root.dark-theme input[type="time"] {
+  background-color: #1e1e2f !important;  /* Mesmo fundo do campo "Tipo" */
+  color: #e0e0e0 !important;             /* Texto claro */
+  border-color: var(--btn-primary) !important; /* Borda azul */
+}
+
+/* Opcional: Ajuste do placeholder (texto de exemplo) no tema escuro */
+:root.dark-theme input::placeholder,
+:root.dark-theme textarea::placeholder {
+  color: #888888 !important;
+}
+
+/* TEMA CLARO - Mantém o fundo claro */
+:root:not(.dark-theme) input,
+:root:not(.dark-theme) select,
+:root:not(.dark-theme) textarea {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
 }
 </style>
