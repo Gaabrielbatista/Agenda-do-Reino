@@ -82,7 +82,7 @@ async function guestLogin() {
 <style scoped>
 .login-container {
   min-height: 100vh;
-  background-color: var(--color-bg-page);
+  background-color: var(--bg-page);
   display: flex;
   justify-content: center;
   align-items: center;
