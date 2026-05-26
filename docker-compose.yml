@@ -3,9 +3,11 @@ services:
     image: postgres:15
     restart: always
     env_file:
-      - backend/.env
+      - .env
     ports:
       - "5432:5432"
+    # volumes:
+    #   - db_data:/var/lib/postgresql/data
 
   web:
     build: ./backend
@@ -15,11 +17,11 @@ services:
     volumes:
       - ./backend:/app
     env_file:
-      - backend/.env  
+      - .env
     environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/mydb
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
 
 # volumes:
-#   db_data:
+#    db_data:
