@@ -1,21 +1,42 @@
+# Git
 .git
 .gitignore
 
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
-
 .venv/
 venv/
 .env
-
-tests/
-
 *.log
+*.pid
 
+# Tests
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
 .vscode/
 .idea/
+*.swp
 
-docker-compose.yml
+# Frontend (não precisa ir pro container)
+frontend/
+node_modules/
+dist/
+
+# Docker
+docker-compose*.yml
+Dockerfile
+
+# Docs
 README.md
 LICENSE
+
+# Temp
+tmp/
+temp/
+*.tmp

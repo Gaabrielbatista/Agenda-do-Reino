@@ -19,10 +19,10 @@ def gerar_ocorrencias(
     """
     if not evento.ativo:
         return []
-
-    # Carrega exceções do evento de uma só vez (evita N+1)
-    excecoes: dict[datetime, EventoExcecao] = {
-        e.data_original: e
+    
+    # Evita N+1
+    excecoes: dict[date, EventoExcecao] = {
+        e.data_original.date(): e
         for e in EventoExcecao.query.filter_by(evento_recorrente_id=evento.id).all()
     }
 
@@ -33,8 +33,7 @@ def gerar_ocorrencias(
 
     dia_atual = primeiro_dia
     while dia_atual <= fim:
-        data_hora_original = datetime.combine(dia_atual, evento.hora_inicio)
-        excecao = excecoes.get(data_hora_original)
+        excecao = excecoes.get(dia_atual)
 
         if excecao is None:
             # Ocorrência normal
