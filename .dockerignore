@@ -23,7 +23,7 @@ htmlcov/
 .idea/
 *.swp
 
-# Frontend (não precisa ir pro container)
+# Frontend
 frontend/
 node_modules/
 dist/
