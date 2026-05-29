@@ -228,7 +228,3 @@ Este projeto está licenciado sob a **Licença MIT**. Veja o arquivo [LICENSE](L
 ## 📞 Contato & Suporte
 
 Para dúvidas, sugestões ou relatos de bugs, abra uma **Issue** no repositório ou entre em contato com a equipe de desenvolvimento.
-
----
-
-**Desenvolvido com ❤️ como projeto de extensão universitária.**
