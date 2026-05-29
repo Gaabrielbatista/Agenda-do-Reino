@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "-m", "app.app" ]
+CMD alembic upgrade head && python -m app.app

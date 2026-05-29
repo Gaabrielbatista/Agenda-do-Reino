@@ -6,7 +6,15 @@ from functools import wraps
 from flask import request, jsonify, g
 
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-inseguro')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+if SECRET_KEY is None:
+    if os.getenv('FLASK_ENV') == 'production' or os.getenv('ENVIROMENT') == 'production':
+        raise RuntimeError("SECRET_KEY não definido no ambiente de produção")
+    else:
+        print("WARNING: SECRET_KEY não definido. Usando valor padrão para desenvolvimento.")
+        SECRET_KEY = 'dev-secret-inseguro'
+
 EXPIRACAO_HORAS = 24
 
 
