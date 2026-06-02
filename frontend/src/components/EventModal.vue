@@ -4,7 +4,7 @@
       <div class="modal-container" :class="{ 'dark-theme': isDark }">
         <div class="modal-header">
           <h3>{{ evento?.titulo || 'Carregando...' }}</h3>
-          <button class="close-btn" @click="close">✕</button>
+          <button class="close-btn" @click="close"><XMarkIcon class="icon-svg" aria-hidden="true" /></button>
         </div>
 
         <div v-if="loading" class="modal-body">
@@ -16,37 +16,42 @@
         </div>
 
         <div v-else-if="evento" class="modal-body">
-          <!-- Informações comuns -->
-          <div class="info-row">
-            <strong>📅 Data/Hora:</strong>
-            {{ formatDateTime(evento.data_inicio) }}
-            <span v-if="evento.data_fim"> – {{ formatDateTime(evento.data_fim) }}</span>
-          </div>
-          <div class="info-row" v-if="evento.descricao">
-            <strong>📝 Descrição:</strong> {{ evento.descricao }}
+          <!-- Informações comuns (sem horário) -->
+          <div class="info-row info-row-descricao" v-if="evento.descricao">
+            <strong class="info-label"><DocumentTextIcon class="info-icon" aria-hidden="true" />Descrição</strong>
+            <p class="descricao-texto">{{ evento.descricao }}</p>
           </div>
 
           <!-- Se for evento normal -->
           <template v-if="tipo === 'normal'">
             <div class="info-row">
-              <strong>🖌️ Status:</strong> {{ evento.status === 'ativo' ? 'Ativo' : 'Cancelado' }}
+              <strong class="info-label"><CalendarDaysIcon class="info-icon" aria-hidden="true" />Data e Hora</strong>
+              {{ formatDateTime(evento.data_inicio) }}
+              <span v-if="evento.data_fim"> – {{ formatDateTime(evento.data_fim) }}</span>
+            </div>
+            <div class="info-row">
+              <strong class="info-label"><InformationCircleIcon class="info-icon" aria-hidden="true" />Status:</strong> {{ evento.status === 'ativo' ? 'Ativo' : 'Cancelado' }}
             </div>
           </template>
 
           <!-- Se for evento recorrente -->
           <template v-if="tipo === 'recorrente'">
             <div class="info-row">
-              <strong>🔁 Recorrência:</strong>
-              {{ diasSemana[evento.dia_semana] }} às {{ evento.hora_inicio }}
+              <strong class="info-label"><ArrowPathIcon class="info-icon" aria-hidden="true" />Recorrência:</strong>
+              {{ diasSemana[evento.dia_semana] }}
+            </div>
+            <div class="info-row">
+              <strong class="info-label"><ClockIcon class="info-icon" aria-hidden="true" />Horário:</strong>
+              {{ evento.hora_inicio }}
               <span v-if="evento.hora_fim"> – {{ evento.hora_fim }}</span>
             </div>
             <div class="info-row">
-              <strong>✅ Ativo:</strong> {{ evento.ativo ? 'Sim' : 'Não' }}
+              <strong class="info-label"><CheckCircleIcon class="info-icon" aria-hidden="true" />Ativo:</strong> {{ evento.ativo ? 'Sim' : 'Não' }}
             </div>
 
             <!-- Próximas ocorrências -->
             <div class="info-section">
-              <strong>📅 Próximas ocorrências (30 dias):</strong>
+              <strong class="info-label"><CalendarDaysIcon class="info-icon" aria-hidden="true" />Próximos Eventos (30 dias)</strong>
               <ul v-if="proximasOcorrencias.length">
                 <li v-for="occ in proximasOcorrencias" :key="occ">
                   {{ formatDateTime(occ) }}
@@ -57,7 +62,7 @@
 
             <!-- Exceções -->
             <div class="info-section">
-              <strong>⚠️ Exceções:</strong>
+              <strong class="info-label"><ExclamationTriangleIcon class="info-icon" aria-hidden="true" />Exceções</strong>
               <ul v-if="excecoes.length">
                 <li v-for="exc in excecoes" :key="exc.id">
                   {{ formatDate(exc.data_original) }} – {{ exc.tipo === 'CANCELAMENTO' ? 'Cancelado' : 'Remarcado' }}
@@ -72,15 +77,15 @@
           </template>
 
           <div class="info-row">
-            <strong>👤 Criado por:</strong> ID {{ evento.criado_por }}
+            <strong class="info-label"><UserIcon class="info-icon" aria-hidden="true" />Criado por: </strong> ID {{ evento.criado_por }}
           </div>
 
           <!-- Botões de ação (apenas admin) -->
           <div class="action-buttons" v-if="isAdmin">
-            <button class="btn-edit" @click="close(); $emit('edit', evento.id, tipo)">✏️ Editar</button>
-            <button class="btn-delete" @click="deleteEvent">🗑️ Excluir</button>
+            <button class="btn-edit" @click="close(); $emit('edit', evento.id, tipo)"><PencilSquareIcon class="btn-icon" aria-hidden="true" />Editar</button>
+            <button class="btn-delete" @click="deleteEvent"><TrashIcon class="btn-icon" aria-hidden="true" />Excluir</button>
             <button v-if="tipo === 'recorrente'" class="btn-exceptions" @click="manageExceptions">
-              ⚙️ Gerenciar Exceções
+              <Cog6ToothIcon class="btn-icon" aria-hidden="true" />Gerenciar Exceções
             </button>
           </div>
         </div>
@@ -95,6 +100,21 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/services/api'
 import { isDark } from '@/composables/useTheme'
+import { useToast } from '@/composables/useToast'
+import {
+  XMarkIcon,
+  CalendarDaysIcon,
+  DocumentTextIcon,
+  InformationCircleIcon,
+  ArrowPathIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  UserIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  Cog6ToothIcon,
+  ClockIcon
+} from '@heroicons/vue/24/outline'
 
 const props = defineProps<{
   visible: boolean
@@ -106,6 +126,7 @@ const emit = defineEmits(['close', 'deleted', "edit"])
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { notifySuccess, notifyError } = useToast()
 const isAdmin = authStore.user?.tipo === 'admin'
 
 const loading = ref(false)
@@ -159,6 +180,7 @@ const fetchEvent = async () => {
   } catch (err) {
     console.error(err)
     error.value = 'Erro ao carregar detalhes do evento.'
+    notifyError(error.value)
   } finally {
     loading.value = false
   }
@@ -184,11 +206,12 @@ const deleteEvent = async () => {
       ? `/eventos/normais/${props.eventId}`
       : `/eventos/recorrentes/${props.eventId}`
     await api.delete(endpoint)
+    notifySuccess('Evento excluído com sucesso.')
     emit('deleted')
     close()
   } catch (err) {
     console.error(err)
-    alert('Erro ao excluir evento.')
+    notifyError('Erro ao excluir evento.')
   }
 }
 
@@ -221,7 +244,7 @@ watch(() => props.visible, (newVal) => {
 
 .modal-container {
   background: var(--bg-card);
-  color: var(--text-primary);  /* <-- Mude de #e0e0e0 para var(--text-primary) */
+  color: var(--text-primary);
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
@@ -235,7 +258,7 @@ watch(() => props.visible, (newVal) => {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--border-color); /* <-- Mude de #3a3a4a para var(--border-color) */
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
@@ -246,13 +269,13 @@ watch(() => props.visible, (newVal) => {
 .close-btn {
   background: none;
   border: none;
-  color: var(--text-secondary); /* <-- Mude de #aaa para var(--text-secondary) */
+  color: var(--text-secondary);
   font-size: 1.5rem;
   cursor: pointer;
 }
 
 .close-btn:hover {
-  color: var(--text-primary); /* <-- Mude de white para var(--text-primary) */
+  color: var(--text-primary);
 }
 
 .modal-body {
@@ -261,11 +284,41 @@ watch(() => props.visible, (newVal) => {
 
 .info-row {
   margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.info-row-descricao {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start;
+  gap: 0.2rem;            
+}
+
+.descricao-texto {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.info-icon {
+  margin-right: 0.55rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.btn-icon {
+  margin-right: 0.4rem;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 
 .info-section {
   margin-top: 1rem;
-  border-top: 1px solid var(--border-color); /* <-- Mude de #3a3a4a para var(--border-color) */
+  border-top: 1px solid var(--border-color);
   padding-top: 1rem;
 }
 
@@ -310,5 +363,27 @@ watch(() => props.visible, (newVal) => {
 .btn-exceptions {
   background: #10b981;
   color: white;
+}
+
+.icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.info-label {
+  font-size: 1.1rem;
+  font-weight: 700; 
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center; 
+  gap: 0.25rem;
+}
+
+.descricao-texto {
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  padding-left: 1.8rem;
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 </style>

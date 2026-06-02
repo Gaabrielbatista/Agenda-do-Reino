@@ -4,7 +4,7 @@
       <div class="modal-container">
         <div class="modal-header">
           <h3>{{ isEditing ? 'Editar Evento' : 'Novo Evento' }}</h3>
-          <button class="close-btn" @click="close">✕</button>
+          <button class="close-btn" @click="close"><XMarkIcon class="icon-svg" aria-hidden="true" /></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="handleSubmit">
@@ -76,8 +76,10 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
+import { useToast } from '@/composables/useToast'
 
 const props = defineProps<{
   visible: boolean
@@ -88,6 +90,7 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'saved'])
 
 const authStore = useAuthStore()
+const { notifySuccess, notifyError } = useToast()
 const loading = ref(false)
 const error = ref('')
 const isEditing = computed(() => !!props.eventId)
@@ -158,11 +161,13 @@ const handleSubmit = async () => {
         await api.post('/eventos/recorrentes', payload)
       }
     }
+    notifySuccess(isEditing.value ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!')
     emit('saved')
     close()
   } catch (err: any) {
     console.error(err)
     error.value = err.response?.data?.error || 'Erro ao salvar evento.'
+    notifyError(error.value)
   } finally {
     loading.value = false
   }
