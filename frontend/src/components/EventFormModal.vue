@@ -4,7 +4,7 @@
       <div class="modal-container">
         <div class="modal-header">
           <h3>{{ isEditing ? 'Editar Evento' : 'Novo Evento' }}</h3>
-          <button class="close-btn" @click="close"><i class="fas fa-xmark"></i></button>
+          <button class="close-btn" @click="close"><XMarkIcon class="icon-svg" aria-hidden="true" /></button>
         </div>
         <div class="modal-body">
           <form @submit.prevent="handleSubmit">
@@ -76,6 +76,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import api from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
 import { useToast } from '@/composables/useToast'

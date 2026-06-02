@@ -3,13 +3,13 @@
     <div class="profile-card">
       <div class="card-header">
         <button class="back-btn" @click="goBack" title="Voltar para a Agenda">
-          <i class="fas fa-arrow-left"></i>
+          <ArrowLeftIcon class="icon-svg" aria-hidden="true" />
         </button>
         <h2>Meu Perfil</h2>
       </div>
 
       <div class="avatar-container">
-        <i class="fas fa-user-circle avatar-icon"></i>
+        <UserCircleIcon class="avatar-icon" aria-hidden="true" />
         <span class="user-badge" :class="userRoleClass">{{ userRoleLabel }}</span>
       </div>
 
@@ -17,7 +17,7 @@
         <div class="form-group">
           <label for="nome">Nome</label>
           <div class="input-wrapper">
-            <i class="fas fa-user input-icon"></i>
+            <UserIcon class="input-icon" aria-hidden="true" />
             <input
               id="nome"
               v-model="form.nome"
@@ -32,7 +32,7 @@
         <div class="form-group">
           <label for="email">E-mail</label>
           <div class="input-wrapper">
-            <i class="fas fa-envelope input-icon"></i>
+            <EnvelopeIcon class="input-icon" aria-hidden="true" />
             <input
               id="email"
               v-model="form.email"
@@ -49,7 +49,7 @@
           <div class="form-group">
             <label for="senha">Nova Senha (deixe em branco para manter)</label>
             <div class="input-wrapper">
-              <i class="fas fa-lock input-icon"></i>
+              <LockClosedIcon class="input-icon" aria-hidden="true" />
               <input
                 id="senha"
                 v-model="form.senha"
@@ -61,19 +61,19 @@
           </div>
 
           <button type="submit" class="btn-save" :disabled="loading">
-            <i class="fas fa-save"></i>
+            <ArrowDownTrayIcon class="btn-icon" aria-hidden="true" />
             {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
           </button>
         </template>
         <template v-else>
           <div class="info-alert">
-            <i class="fas fa-info-circle"></i>
+            <InformationCircleIcon class="btn-icon" aria-hidden="true" />
             Apenas administradores podem atualizar os dados cadastrais.
           </div>
         </template>
 
         <p v-if="errorMsg" class="message error-msg">
-          <i class="fas fa-exclamation-triangle"></i> {{ errorMsg }}
+          <ExclamationTriangleIcon class="btn-icon" aria-hidden="true" /> {{ errorMsg }}
         </p>
       </form>
     </div>
@@ -86,6 +86,16 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/services/api'
 import { useToast } from '@/composables/useToast'
+import {
+  ArrowLeftIcon,
+  UserCircleIcon,
+  UserIcon,
+  EnvelopeIcon,
+  LockClosedIcon,
+  ArrowDownTrayIcon,
+  InformationCircleIcon,
+  ExclamationTriangleIcon
+} from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -217,7 +227,8 @@ const handleUpdate = async () => {
 }
 
 .avatar-icon {
-  font-size: 5rem; /* Ícone maior */
+  width: 5rem;
+  height: 5rem;
   color: var(--text-secondary);
   margin-bottom: 0.5rem;
 }
@@ -231,7 +242,15 @@ const handleUpdate = async () => {
 .input-icon {
   position: absolute;
   left: 1rem;
+  width: 1rem;
+  height: 1rem;
   color: var(--text-secondary);
+}
+
+.btn-icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.4rem;
 }
 
 .input-wrapper input {

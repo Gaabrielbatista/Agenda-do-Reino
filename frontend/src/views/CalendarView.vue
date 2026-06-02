@@ -3,36 +3,37 @@
     <aside :class="['sidebar', { collapsed: isCollapsed }]">
       <div class="sidebar-header">
         <button class="toggle-btn" @click="toggleSidebar">
-          <i :class="isCollapsed ? 'fas fa-bars' : 'fas fa-chevron-left'"></i>
+          <Bars3Icon v-if="isCollapsed" class="icon-svg" aria-hidden="true" />
+          <ChevronLeftIcon v-else class="icon-svg" aria-hidden="true" />
         </button>
       </div>
       <nav class="sidebar-nav">
         <button v-if="isAdmin" class="nav-item" @click="openCreateModal">
-          <i class="fas fa-calendar-plus"></i>
+          <PlusCircleIcon class="nav-icon" aria-hidden="true" />
           <span v-if="!isCollapsed">Novo Evento</span>
         </button>
         <div class="nav-divider" v-if="!isCollapsed">Visualização</div>
         <button class="nav-item" @click="changeView('dayGridMonth')" :class="{ active: currentView === 'dayGridMonth' }">
-          <i class="fas fa-calendar-alt"></i>
+          <CalendarDaysIcon class="nav-icon" aria-hidden="true" />
           <span v-if="!isCollapsed">Mês</span>
         </button>
         <button class="nav-item" @click="changeView('timeGridWeek')" :class="{ active: currentView === 'timeGridWeek' }">
-          <i class="fas fa-calendar-week"></i>
+          <CalendarIcon class="nav-icon" aria-hidden="true" />
           <span v-if="!isCollapsed">Semana</span>
         </button>
         <button class="nav-item" @click="changeView('timeGridDay')" :class="{ active: currentView === 'timeGridDay' }">
-          <i class="fas fa-calendar-day"></i>
+          <ClockIcon class="nav-icon" aria-hidden="true" />
           <span v-if="!isCollapsed">Dia</span>
         </button>
       </nav>
 
       <div class="sidebar-footer">
         <button class="nav-item" @click="goToProfile">
-          <i class="fas fa-user-circle"></i>
+          <UserCircleIcon class="nav-icon" aria-hidden="true" />
           <span v-if="!isCollapsed">Perfil</span>
         </button>
         <button class="nav-item" @click="logout">
-          <i class="fas fa-arrow-right-from-bracket"></i>
+          <ArrowRightOnRectangleIcon class="nav-icon" aria-hidden="true" />
           <span v-if="!isCollapsed">Sair</span>
         </button>
       </div>
@@ -42,7 +43,8 @@
       <div class="top-bar">
         <div class="top-bar-left">
           <button @click="toggleTheme" class="theme-toggle-btn">
-            <i :class="isDark ? 'fas fa-moon' : 'fas fa-sun'"></i>
+            <MoonIcon v-if="isDark" class="icon-svg" aria-hidden="true" />
+            <SunIcon v-else class="icon-svg" aria-hidden="true" />
           </button>
         </div>
         <div class="top-bar-center">
@@ -50,7 +52,7 @@
         </div>
         <div class="top-bar-right">
           <div v-if="authStore.token" class="user-info-top">
-            <i class="fas fa-user-circle"></i>
+            <UserCircleIcon class="nav-icon" aria-hidden="true" />
             <span>{{ authStore.user?.nome || 'Usuário' }}</span>
             <span class="user-role-badge" :class="authStore.user?.tipo === 'admin' ? 'admin' : 'membro'">
               {{ authStore.user?.tipo === 'admin' ? 'Admin' : 'Membro' }}
@@ -101,6 +103,18 @@ import EventModal from '@/components/EventModal.vue'
 import EventFormModal from '@/components/EventFormModal.vue'
 
 import { isDark, toggleTheme } from '@/composables/useTheme'
+import {
+  Bars3Icon,
+  ChevronLeftIcon,
+  PlusCircleIcon,
+  CalendarDaysIcon,
+  CalendarIcon,
+  ClockIcon,
+  UserCircleIcon,
+  ArrowRightOnRectangleIcon,
+  MoonIcon,
+  SunIcon
+} from '@heroicons/vue/24/outline'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -272,7 +286,7 @@ const logout = () => {
   white-space: nowrap;
 }
 
-.nav-item i {
+.nav-item svg {
   width: 24px;
   text-align: center;
 }
@@ -351,8 +365,9 @@ const logout = () => {
   border-radius: 20px;
 }
 
-.user-info-top i {
-  font-size: 1.2rem;
+.user-info-top svg {
+  width: 1.2rem;
+  height: 1.2rem;
   color: var(--btn-primary);
 }
 
@@ -460,7 +475,4 @@ const logout = () => {
   width: 100%;
 }
 
-.nav-item .fa-right-from-bracket {
-  color: var(--text-primary);
-}
 </style>

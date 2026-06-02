@@ -3,7 +3,7 @@
     <div class="exceptions-card">
       <div class="card-header">
         <button class="back-btn" @click="goBack" title="Voltar para a Agenda">
-          <i class="fas fa-arrow-left"></i>
+          <ArrowLeftIcon class="icon-svg" aria-hidden="true" />
         </button>
         <div class="header-titles">
           <h2>Gerenciar Exceções</h2>
@@ -23,11 +23,11 @@
           <h3>Exceções Configuradas</h3>
           
           <div v-if="loadingList" class="loading-state">
-            <i class="fas fa-spinner fa-spin"></i> Carregando exceções...
+            <ArrowPathIcon class="loading-icon animate-spin" aria-hidden="true" /> Carregando exceções...
           </div>
           
           <div v-else-if="excecoes.length === 0" class="empty-state">
-            <i class="fas fa-calendar-check"></i>
+            <CalendarDaysIcon class="icon-svg" aria-hidden="true" />
             <p>Nenhuma exceção configurada para este evento.</p>
           </div>
 
@@ -38,7 +38,7 @@
                   {{ exc.tipo === 'CANCELAMENTO' ? 'Cancelado' : 'Remarcado' }}
                 </span>
                 <button v-if="isAdmin" class="btn-delete-exc" @click="deleteException(exc.id)" title="Remover Exceção">
-                  <i class="fas fa-trash"></i>
+                  <TrashIcon class="btn-icon" aria-hidden="true" />
                 </button>
               </div>
 
@@ -131,11 +131,11 @@
             </div>
 
             <button type="submit" class="btn-submit" :disabled="loading">
-              <i class="fas fa-plus"></i>
+              <PlusIcon class="btn-icon" aria-hidden="true" />
               {{ loading ? 'Adicionando...' : 'Adicionar Exceção' }}
             </button>
 
-            <p v-if="error" class="error-msg"><i class="fas fa-exclamation-triangle"></i> {{ error }}</p>
+            <p v-if="error" class="error-msg"><ExclamationTriangleIcon class="btn-icon" aria-hidden="true" /> {{ error }}</p>
           </form>
         </div>
       </div>
@@ -149,6 +149,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/services/api'
 import { useToast } from '@/composables/useToast'
+import {
+  ArrowLeftIcon,
+  ArrowPathIcon,
+  CalendarDaysIcon,
+  TrashIcon,
+  PlusIcon,
+  ExclamationTriangleIcon
+} from '@heroicons/vue/24/outline'
 
 const route = useRoute()
 const router = useRouter()
@@ -354,13 +362,15 @@ input:focus, select:focus, textarea:focus {
 
 /* Estilos Estruturais das Exceções */
 .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
-.back-btn { background: none; border: none; color: var(--text-primary); font-size: 1.2rem; cursor: pointer; }
+.back-btn { background: none; border: none; color: var(--text-primary); cursor: pointer; }
+.back-btn svg { width: 1.2rem; height: 1.2rem; }
 .event-details { margin-bottom: 2rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px; }
 .main-layout { display: flex; flex-direction: column; gap: 2rem; }
 .form-group { margin-bottom: 1.2rem; }
 .helper-text { font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 0.3rem; }
 .btn-submit { width: 100%; padding: 0.8rem; background: var(--btn-primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s;}
 .btn-submit:hover { background: var(--btn-primary-hover); }
+.btn-icon { width: 1rem; height: 1rem; margin-right: 0.4rem; }
 .success-msg { margin-top: 0.75rem; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
 .exc-card { border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: var(--bg-page); }
 .exc-badge-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
@@ -369,5 +379,10 @@ input:focus, select:focus, textarea:focus {
 .badge-resched { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
 .btn-delete-exc { background: none; border: none; color: #ef4444; cursor: pointer; }
 .empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
-.empty-state i { font-size: 2rem; margin-bottom: 0.5rem; }
+.empty-state svg { width: 2rem; height: 2rem; margin-bottom: 0.5rem; }
+.loading-icon { width: 1rem; height: 1rem; margin-right: 0.5rem; }
+.animate-spin { animation: spin 1s linear infinite; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 </style>

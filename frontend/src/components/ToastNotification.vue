@@ -1,6 +1,6 @@
 <template>
   <div class="toast-notification" :class="type" @click="closeToast">
-    <i :class="['toast-icon', iconClass]" aria-hidden="true"></i>
+    <component :is="iconComponent" class="toast-icon" aria-hidden="true" />
     <div class="toast-content">
       <p class="toast-message">{{ message }}</p>
     </div>
@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   id: { type: Number, required: true },
@@ -17,10 +18,8 @@ const props = defineProps({
   duration: { type: Number, default: 3500 },
 })
 
-const iconClass = computed(() =>
-  props.type === 'error'
-    ? 'fas fa-exclamation-triangle'
-    : 'fas fa-check-circle'
+const iconComponent = computed(
+  () => (props.type === 'error' ? ExclamationTriangleIcon : CheckCircleIcon)
 )
 
 const emit = defineEmits<{
@@ -56,7 +55,9 @@ const closeToast = () => {
 }
 
 .toast-icon {
-  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
 }
 
 .toast-content {
