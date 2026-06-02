@@ -32,7 +32,7 @@
           <span v-if="!isCollapsed">Perfil</span>
         </button>
         <button class="nav-item" @click="logout">
-          <i class="fa-solid fa-right-from-bracket"></i>
+          <i class="fas fa-arrow-right-from-bracket"></i>
           <span v-if="!isCollapsed">Sair</span>
         </button>
       </div>
@@ -139,6 +139,7 @@ const fetchEvents = async (info: any) => {
       title: ev.titulo,
       start: ev.data_inicio,
       end: ev.data_fim || ev.data_inicio,
+      classNames: [ev.source_type === 'normal' ? 'fc-event-normal' : 'fc-event-recurring'],
       extendedProps: { id: ev.source_id, type: ev.source_type }
     }))
   } catch (error) {
@@ -154,6 +155,12 @@ const calendarOptions = {
   initialView: currentView.value,
   weekends: true,
   height: '100%',
+  eventTimeFormat: {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    omitZeroMinute: false
+  },
   events: fetchEvents,
   eventClick: (info: any) => {
     const { id, type } = info.event.extendedProps
@@ -392,6 +399,64 @@ const logout = () => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+/* FullCalendar — estilo de cartões para eventos dayGrid */
+:deep(.fc-daygrid-event) {
+  display: block;
+  width: calc(100% - 0.25rem);
+  padding: 4px 8px;
+  margin: 0.12rem 0;
+  border-radius: 0.75rem;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
+}
+
+:deep(.fc-daygrid-event.fc-event-recurring) {
+  background-color: var(--btn-primary);
+}
+
+:deep(.fc-daygrid-event.fc-event-normal) {
+  background-color: #10b981;
+}
+
+:deep(.fc-daygrid-event:hover),
+:deep(.fc-daygrid-event:focus) {
+  transform: translateY(-1px) scale(1.01);
+  filter: brightness(1.08);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+:deep(.fc-daygrid-event .fc-event-title),
+:deep(.fc-daygrid-event .fc-event-title-container) {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #ffffff;
+}
+
+:deep(.fc-daygrid-event .fc-event-time) {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.75rem;
+  opacity: 0.92;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+:deep(.fc-daygrid-event-dot),
+:deep(.fc-event-dot) {
+  display: none;
+}
+
+:deep(.fc-daygrid-event-harness) {
+  width: 100%;
 }
 
 .nav-item .fa-right-from-bracket {

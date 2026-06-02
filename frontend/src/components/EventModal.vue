@@ -4,7 +4,7 @@
       <div class="modal-container" :class="{ 'dark-theme': isDark }">
         <div class="modal-header">
           <h3>{{ evento?.titulo || 'Carregando...' }}</h3>
-          <button class="close-btn" @click="close">✕</button>
+          <button class="close-btn" @click="close"><i class="fas fa-xmark"></i></button>
         </div>
 
         <div v-if="loading" class="modal-body">
@@ -18,35 +18,35 @@
         <div v-else-if="evento" class="modal-body">
           <!-- Informações comuns -->
           <div class="info-row">
-            <strong>📅 Data/Hora:</strong>
+            <strong><i class="fas fa-calendar-alt info-icon"></i>Data/Hora:</strong>
             {{ formatDateTime(evento.data_inicio) }}
             <span v-if="evento.data_fim"> – {{ formatDateTime(evento.data_fim) }}</span>
           </div>
           <div class="info-row" v-if="evento.descricao">
-            <strong>📝 Descrição:</strong> {{ evento.descricao }}
+            <strong><i class="fas fa-align-left info-icon"></i>Descrição:</strong> {{ evento.descricao }}
           </div>
 
           <!-- Se for evento normal -->
           <template v-if="tipo === 'normal'">
             <div class="info-row">
-              <strong>🖌️ Status:</strong> {{ evento.status === 'ativo' ? 'Ativo' : 'Cancelado' }}
+              <strong><i class="fas fa-info-circle info-icon"></i>Status:</strong> {{ evento.status === 'ativo' ? 'Ativo' : 'Cancelado' }}
             </div>
           </template>
 
           <!-- Se for evento recorrente -->
           <template v-if="tipo === 'recorrente'">
             <div class="info-row">
-              <strong>🔁 Recorrência:</strong>
+              <strong><i class="fas fa-repeat info-icon"></i>Recorrência:</strong>
               {{ diasSemana[evento.dia_semana] }} às {{ evento.hora_inicio }}
               <span v-if="evento.hora_fim"> – {{ evento.hora_fim }}</span>
             </div>
             <div class="info-row">
-              <strong>✅ Ativo:</strong> {{ evento.ativo ? 'Sim' : 'Não' }}
+              <strong><i class="fas fa-check-circle info-icon"></i>Ativo:</strong> {{ evento.ativo ? 'Sim' : 'Não' }}
             </div>
 
             <!-- Próximas ocorrências -->
             <div class="info-section">
-              <strong>📅 Próximas ocorrências (30 dias):</strong>
+              <strong><i class="fas fa-calendar-alt info-icon"></i>Próximas ocorrências (30 dias):</strong>
               <ul v-if="proximasOcorrencias.length">
                 <li v-for="occ in proximasOcorrencias" :key="occ">
                   {{ formatDateTime(occ) }}
@@ -57,7 +57,7 @@
 
             <!-- Exceções -->
             <div class="info-section">
-              <strong>⚠️ Exceções:</strong>
+              <strong><i class="fas fa-exclamation-triangle info-icon"></i>Exceções:</strong>
               <ul v-if="excecoes.length">
                 <li v-for="exc in excecoes" :key="exc.id">
                   {{ formatDate(exc.data_original) }} – {{ exc.tipo === 'CANCELAMENTO' ? 'Cancelado' : 'Remarcado' }}
@@ -72,15 +72,15 @@
           </template>
 
           <div class="info-row">
-            <strong>👤 Criado por:</strong> ID {{ evento.criado_por }}
+            <strong><i class="fas fa-user info-icon"></i>Criado por:</strong> ID {{ evento.criado_por }}
           </div>
 
           <!-- Botões de ação (apenas admin) -->
           <div class="action-buttons" v-if="isAdmin">
-            <button class="btn-edit" @click="close(); $emit('edit', evento.id, tipo)">✏️ Editar</button>
-            <button class="btn-delete" @click="deleteEvent">🗑️ Excluir</button>
+            <button class="btn-edit" @click="close(); $emit('edit', evento.id, tipo)"><i class="fas fa-pen btn-icon"></i>Editar</button>
+            <button class="btn-delete" @click="deleteEvent"><i class="fas fa-trash btn-icon"></i>Excluir</button>
             <button v-if="tipo === 'recorrente'" class="btn-exceptions" @click="manageExceptions">
-              ⚙️ Gerenciar Exceções
+              <i class="fas fa-gear btn-icon"></i>Gerenciar Exceções
             </button>
           </div>
         </div>
@@ -95,6 +95,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/services/api'
 import { isDark } from '@/composables/useTheme'
+import { useToast } from '@/composables/useToast'
 
 const props = defineProps<{
   visible: boolean
@@ -106,6 +107,7 @@ const emit = defineEmits(['close', 'deleted', "edit"])
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { notifySuccess, notifyError } = useToast()
 const isAdmin = authStore.user?.tipo === 'admin'
 
 const loading = ref(false)
@@ -159,6 +161,7 @@ const fetchEvent = async () => {
   } catch (err) {
     console.error(err)
     error.value = 'Erro ao carregar detalhes do evento.'
+    notifyError(error.value)
   } finally {
     loading.value = false
   }
@@ -184,11 +187,12 @@ const deleteEvent = async () => {
       ? `/eventos/normais/${props.eventId}`
       : `/eventos/recorrentes/${props.eventId}`
     await api.delete(endpoint)
+    notifySuccess('Evento excluído com sucesso.')
     emit('deleted')
     close()
   } catch (err) {
     console.error(err)
-    alert('Erro ao excluir evento.')
+    notifyError('Erro ao excluir evento.')
   }
 }
 
@@ -261,6 +265,11 @@ watch(() => props.visible, (newVal) => {
 
 .info-row {
   margin-bottom: 0.8rem;
+}
+
+.info-icon,
+.btn-icon {
+  margin-right: 0.55rem;
 }
 
 .info-section {

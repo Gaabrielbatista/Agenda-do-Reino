@@ -75,9 +75,6 @@
         <p v-if="errorMsg" class="message error-msg">
           <i class="fas fa-exclamation-triangle"></i> {{ errorMsg }}
         </p>
-        <p v-if="successMsg" class="message success-msg">
-          <i class="fas fa-check-circle"></i> {{ successMsg }}
-        </p>
       </form>
     </div>
   </div>
@@ -88,13 +85,14 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/services/api'
+import { useToast } from '@/composables/useToast'
 
 const router = useRouter()
 const authStore = useAuthStore()
+const { notifySuccess, notifyError } = useToast()
 
 const loading = ref(false)
 const errorMsg = ref('')
-const successMsg = ref('')
 
 const form = ref({
   nome: '',
@@ -141,7 +139,6 @@ const handleUpdate = async () => {
     return
   }
   errorMsg.value = ''
-  successMsg.value = ''
 
   try {
     const payload: any = {
@@ -167,12 +164,13 @@ const handleUpdate = async () => {
     
     // Limpa a senha do form
     form.value.senha = ''
-    successMsg.value = 'Perfil atualizado com sucesso!'
+    notifySuccess('Perfil atualizado com sucesso!')
     // After updating profile, navigate back to calendar view
     router.push('/')
   } catch (err: any) {
     console.error(err)
     errorMsg.value = err.response?.data?.error || err.message || 'Erro ao atualizar perfil.'
+    notifyError(errorMsg.value)
   } finally {
     loading.value = false
   }

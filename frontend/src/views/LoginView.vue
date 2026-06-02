@@ -32,6 +32,7 @@ console.log('LoginView carregado')
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useToast } from '@/composables/useToast'
 
 const email = ref('')
 const senha = ref('')
@@ -39,6 +40,7 @@ const loading = ref(false)
 const errorMsg = ref('')
 const router = useRouter()
 const authStore = useAuthStore()
+const { notifyError } = useToast()
 
 async function handleLogin() {
   loading.value = true
@@ -53,7 +55,7 @@ async function handleLogin() {
 }
 
 function forgotPassword() {
-  alert('Funcionalidade em breve. Contate o administrador para redefinir sua senha.')
+  notifyError('Funcionalidade em breve. Contate o administrador para redefinir sua senha.')
 }
 
 import api from '@/services/api'
