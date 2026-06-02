@@ -93,6 +93,7 @@ import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import type { CalendarOptions } from '@fullcalendar/core'
 
 import api from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
@@ -148,7 +149,7 @@ const fetchEvents = async (info: any) => {
   }
 }
 
-const calendarOptions = {
+const calendarOptions: CalendarOptions = {
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
   locale: 'pt-br',
   headerToolbar: { left: '', center: '', right: '' },
@@ -160,7 +161,7 @@ const calendarOptions = {
     minute: '2-digit',
     hour12: false,
     omitZeroMinute: false
-  },
+  } as const,
   events: fetchEvents,
   eventClick: (info: any) => {
     const { id, type } = info.event.extendedProps
