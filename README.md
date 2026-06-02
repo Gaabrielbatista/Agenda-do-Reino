@@ -48,7 +48,7 @@ A **AgendaReino** centraliza todas as informações de eventos em um único luga
 - **Linguagem**: TypeScript 6.0.0
 - **HTTP Client**: Axios 1.16.1
 - **Calendário**: FullCalendar 5.11.5 (com daygrid, timegrid e interaction plugins)
-- **Ícones**: FontAwesome 7.2.0
+- **Ícones**: HeroIcons 2.2.0
 - **Testes Unitários**: Vitest 4.1.4
 - **Testes E2E**: Playwright 1.59.1
 - **Linting**: ESLint 10.2.1, Oxlint 1.60.0
