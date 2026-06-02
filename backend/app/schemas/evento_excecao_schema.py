@@ -30,7 +30,7 @@ class EventoExcecaoCreateSchema(Schema):
 
     evento_recorrente_id = fields.Int(required=True, strict=True)
     data_original = fields.Str(required=True)
-    tipo = fields.Str(required=True, validate=validate.OneOf(['cancelamento', 'remarcacao']))
+    tipo = fields.Str(required=True)
     data_nova = fields.Str(load_default=None, allow_none=True)
     hora_nova_inicio = fields.Str(load_default=None, allow_none=True)
     hora_nova_fim = fields.Str(load_default=None, allow_none=True)
@@ -56,10 +56,15 @@ class EventoExcecaoCreateSchema(Schema):
         if value is not None:
             _parse_time(value)
 
+    @validates('tipo')
+    def validate_tipo(self, value):
+        if str(value).lower() not in ('cancelamento', 'remarcacao'):
+            raise ValidationError("tipo inválido. Use 'cancelamento' ou 'remarcacao'.")
+
     @validates_schema
     def validate_remarcacao(self, data, **kwargs):
         """Remarcação exige ao menos data_nova ou hora_nova_inicio."""
-        if data.get('tipo') == 'remarcacao':
+        if str(data.get('tipo')).lower() == 'remarcacao':
             if not data.get('data_nova') and not data.get('hora_nova_inicio'):
                 raise ValidationError(
                     "Para remarcação, informe ao menos 'data_nova' ou 'hora_nova_inicio'.",

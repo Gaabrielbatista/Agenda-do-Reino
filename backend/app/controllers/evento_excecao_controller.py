@@ -13,7 +13,7 @@ def _serialize(excecao):
         'id': excecao.id,
         'evento_recorrente_id': excecao.evento_recorrente_id,
         'data_original': excecao.data_original.isoformat() if excecao.data_original else None,
-        'tipo': excecao.tipo.value,
+        'tipo': excecao.tipo.name,
         'data_nova': excecao.data_nova.isoformat() if excecao.data_nova else None,
         'hora_nova_inicio': excecao.hora_nova_inicio.strftime('%H:%M') if excecao.hora_nova_inicio else None,
         'hora_nova_fim': excecao.hora_nova_fim.strftime('%H:%M') if excecao.hora_nova_fim else None,
