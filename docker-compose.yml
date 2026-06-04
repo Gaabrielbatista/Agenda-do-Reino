@@ -29,17 +29,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
     depends_on:
       db:
-          condition: service_healthy
+        condition: service_healthy
 
   frontend:
     build: ./frontend
     ports:
       - "80:80"
     depends_on:
-      - web
+      web:
+        - condition: service_healthy
 
 volumes:
    db_data:
