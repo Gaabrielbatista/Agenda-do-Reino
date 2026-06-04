@@ -1,0 +1,71 @@
+/* Theme variables for AgendaReino */
+
+:root[data-theme="light"] {
+  /* Palette */
+  --color-primary: #3b82f6;          /* Tailwind blue-500 */
+  --color-primary-bg: #2563eb;      /* Darker shade for hover/active */
+  --color-secondary: #10b981;        /* Tailwind green-500 */
+  --color-danger: #ef4444;          /* Tailwind red-500 */
+  --color-bg-page: #f9fafb;         /* Light page background */
+  --color-bg-surface: #ffffff;      /* Card / modal background */
+  --color-bg-sidebar: #e5e7eb;      /* Sidebar background */
+  --color-text-primary: #111827;   /* Almost black */
+  --color-text-muted: #6b7280;     /* Gray-500 */
+  --color-border: #d1d5db;          /* Gray-300 */
+  --color-hover-bg: #f3f4f6;        /* Light hover */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.15);
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Font */
+  --font-family-base: 'Inter', Helvetica, Arial, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-bold: 600;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+}
+
+:root[data-theme="dark"] {
+  /* Palette */
+  --color-primary: #3b82f6;
+  --color-primary-bg: #2563eb;
+  --color-secondary: #10b981;
+  --color-danger: #ef4444;
+  --color-bg-page: #111827;          /* Dark page background */
+  --color-bg-surface: #1f2937;       /* Card / modal background */
+  --color-bg-sidebar: #1e293b;       /* Sidebar background */
+  --color-text-primary: #f9fafb;    /* Light text */
+  --color-text-muted: #9ca3af;      /* Gray-400 */
+  --color-border: #374151;          /* Dark border */
+  --color-hover-bg: #374151;        /* Dark hover */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.7);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.6);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.5);
+
+  /* Border radius (same as light) */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Font */
+  --font-family-base: 'Inter', Helvetica, Arial, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-bold: 600;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+}

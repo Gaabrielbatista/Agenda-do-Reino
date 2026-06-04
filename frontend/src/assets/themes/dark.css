@@ -1,0 +1,8 @@
+.dark-theme {
+  --bg-page: #121212;
+  --text-primary: #e0e0e0;
+  --bg-card: #1e1e1e;
+  --bg-sidebar: #1a1a1a;
+  --bg-header: #1a1a1a;
+  --border-color: #333333;
+}
