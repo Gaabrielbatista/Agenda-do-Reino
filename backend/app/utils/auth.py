@@ -9,7 +9,7 @@ from flask import request, jsonify, g
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 if SECRET_KEY is None:
-    if os.getenv('FLASK_ENV') == 'production' or os.getenv('ENVIROMENT') == 'production':
+    if os.getenv('FLASK_ENV') == 'production':
         raise RuntimeError("SECRET_KEY não definido no ambiente de produção")
     else:
         print("WARNING: SECRET_KEY não definido. Usando valor padrão para desenvolvimento.")

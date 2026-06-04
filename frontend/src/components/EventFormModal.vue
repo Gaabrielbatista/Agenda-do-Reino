@@ -18,10 +18,13 @@
             </div>
             <div class="form-group">
               <label>Tipo *</label>
-              <select v-model="form.tipo" required>
+              <select v-model="form.tipo" required :disabled="isEditing">
                 <option value="normal">Normal</option>
                 <option value="recorrente">Recorrente</option>
               </select>
+              <small v-if="isEditing" class="tipo-aviso">
+                * O tipo de evento não pode ser alterado na edição. Para mudar o tipo, exclua e crie um novo evento.
+              </small>
             </div>
 
             <template v-if="form.tipo === 'normal'">
@@ -358,11 +361,23 @@ body.dark-theme select option:checked {
   color: #888888 !important;
 }
 
-/* TEMA CLARO - Mantém o fundo claro */
+/* TEMA CLARO */
 :root:not(.dark-theme) input,
 :root:not(.dark-theme) select,
 :root:not(.dark-theme) textarea {
   background-color: var(--input-bg);
   color: var(--text-primary);
+}
+
+.tipo-aviso {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
