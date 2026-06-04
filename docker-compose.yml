@@ -25,10 +25,11 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/api/agenda"]
-      interval: 10s
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/agenda?inicio=2026-01-01&fim=2026-01-31')"]
+      interval: 15s
       timeout: 5s
       retries: 5
+      start_period: 20s
     depends_on:
       db:
         condition: service_healthy
@@ -39,7 +40,7 @@ services:
       - "80:80"
     depends_on:
       web:
-        - condition: service_healthy
+        condition: service_healthy
 
 volumes:
    db_data:
