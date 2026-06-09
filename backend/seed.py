@@ -19,15 +19,20 @@ if not all([ADMIN_USERNAME, ADMIN_EMAIL, ADMIN_PASSWORD]):
         ADMIN_EMAIL = "admin@example.com"
         ADMIN_PASSWORD = "password123"
 
-app = create_app()
-with app.app_context():
-    repo = UsuarioRepository()
+# verificação se admin já existe
 
-    repo.create({
-        "nome": ADMIN_USERNAME,
-        "email": ADMIN_EMAIL,
-        "senha": ADMIN_PASSWORD,
-        "tipo": "admin"
-    })
+if ADMIN_EMAIL in [user.email for user in Usuario.query.all()]:
+    print("Admin já existe.")
+else:
+    app = create_app()
+    with app.app_context():
+        repo = UsuarioRepository()
 
-    print("Admin criado -", ADMIN_EMAIL)
+        repo.create({
+            "nome": ADMIN_USERNAME,
+            "email": ADMIN_EMAIL,
+            "senha": ADMIN_PASSWORD,
+            "tipo": "admin"
+        })
+
+        print("Admin criado -", ADMIN_EMAIL)
