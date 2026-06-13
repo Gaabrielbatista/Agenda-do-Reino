@@ -1,47 +1,99 @@
 <template>
   <Teleport to="body">
-    <div v-if="visible" class="modal-overlay" @click.self="close">
-      <div class="modal-container">
-        <div class="modal-header">
-          <h3>{{ isEditing ? 'Editar Evento' : 'Novo Evento' }}</h3>
-          <button class="close-btn" @click="close"><XMarkIcon class="icon-svg" aria-hidden="true" /></button>
+    <Transition name="modal">
+      <div v-if="visible" key="modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[10000] p-4" @click.self="close">
+        <div class="bg-card text-text-main rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl border border-border modal-card">
+        
+        <div class="flex justify-between items-center px-6 py-5 border-b border-border">
+          <h3 class="m-0 text-xl font-semibold tracking-wide">{{ isEditing ? 'Editar Evento' : 'Novo Evento' }}</h3>
+          <button class="text-text-secondary hover:text-text-main transition-colors" @click="close">
+            <XMarkIcon class="w-6 h-6" aria-hidden="true" />
+          </button>
         </div>
-        <div class="modal-body">
-          <form @submit.prevent="handleSubmit">
-            <div class="form-group">
-              <label>Título *</label>
-              <input v-model="form.titulo" type="text" required />
+
+        <div class="p-6">
+          <form @submit.prevent="handleSubmit" class="space-y-4">
+            
+            <div class="space-y-1.5">
+              <label class="block text-sm font-medium text-text-main">Título *</label>
+              <input 
+                v-model="form.titulo" 
+                type="text" 
+                required 
+                class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-text-secondary/50"
+                placeholder="Ex: Festividade dos Jovens"
+              />
             </div>
-            <div class="form-group">
-              <label>Descrição</label>
-              <textarea v-model="form.descricao" rows="3"></textarea>
+            
+            <div class="space-y-1.5">
+              <label class="block text-sm font-medium text-text-main">Descrição</label>
+              <textarea 
+                v-model="form.descricao" 
+                rows="3"
+                class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all resize-y placeholder:text-text-secondary/50"
+                placeholder="Detalhes opcionais..."
+              ></textarea>
             </div>
-            <div class="form-group">
-              <label>Tipo *</label>
-              <select v-model="form.tipo" required :disabled="isEditing">
-                <option value="normal">Normal</option>
-                <option value="recorrente">Recorrente</option>
+            
+            <div class="space-y-1.5">
+              <label class="block text-sm font-medium text-text-main">Tipo *</label>
+              <select 
+                v-model="form.tipo" 
+                required 
+                :disabled="isEditing"
+                class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <option value="normal">Evento Único (Normal)</option>
+                <option value="recorrente">Evento Recorrente</option>
               </select>
-              <small v-if="isEditing" class="tipo-aviso">
+              <p v-if="isEditing" class="text-xs text-text-secondary mt-1">
                 * O tipo de evento não pode ser alterado na edição. Para mudar o tipo, exclua e crie um novo evento.
-              </small>
+              </p>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="block text-sm font-medium text-text-main">Cor</label>
+              <div class="flex flex-wrap gap-2">
+                <div
+                  v-for="c in cores"
+                  :key="c"
+                  class="w-8 h-8 rounded-full cursor-pointer ring-2 ring-offset-2 ring-offset-card transition-all hover:scale-110"
+                  :class="form.cor === c ? 'ring-primary' : 'ring-transparent'"
+                  :style="{ backgroundColor: c }"
+                  @click="form.cor = c"
+                ></div>
+              </div>
             </div>
 
             <template v-if="form.tipo === 'normal'">
-              <div class="form-group">
-                <label>Data/Hora Início *</label>
-                <input v-model="form.data_inicio" type="datetime-local" required />
-              </div>
-              <div class="form-group">
-                <label>Data/Hora Fim</label>
-                <input v-model="form.data_fim" type="datetime-local" />
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="block text-sm font-medium text-text-main">Início *</label>
+                  <input 
+                    v-model="form.data_inicio" 
+                    type="datetime-local" 
+                    required 
+                    class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all color-scheme-dark"
+                  />
+                </div>
+                <div class="space-y-1.5">
+                  <label class="block text-sm font-medium text-text-main">Fim</label>
+                  <input 
+                    v-model="form.data_fim" 
+                    type="datetime-local" 
+                    class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all color-scheme-dark"
+                  />
+                </div>
               </div>
             </template>
 
             <template v-else>
-              <div class="form-group">
-                <label>Dia da semana *</label>
-                <select v-model="form.dia_semana">
+              <div class="space-y-1.5">
+                <label class="block text-sm font-medium text-text-main">Dia da semana *</label>
+                <select 
+                  v-model="form.dia_semana"
+                  class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                >
                   <option :value="0">Segunda</option>
                   <option :value="1">Terça</option>
                   <option :value="2">Quarta</option>
@@ -51,29 +103,62 @@
                   <option :value="6">Domingo</option>
                 </select>
               </div>
-              <div class="form-group">
-                <label>Hora Início *</label>
-                <input v-model="form.hora_inicio" type="time" required />
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label class="block text-sm font-medium text-text-main">Hora Início *</label>
+                  <input 
+                    v-model="form.hora_inicio" 
+                    type="time" 
+                    required 
+                    class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all color-scheme-dark"
+                  />
+                </div>
+                <div class="space-y-1.5">
+                  <label class="block text-sm font-medium text-text-main">Hora Fim</label>
+                  <input 
+                    v-model="form.hora_fim" 
+                    type="time" 
+                    class="w-full bg-page border border-border text-text-main rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all color-scheme-dark"
+                  />
+                </div>
               </div>
-              <div class="form-group">
-                <label>Hora Fim</label>
-                <input v-model="form.hora_fim" type="time" />
-              </div>
-              <div class="form-group checkbox">
-                <input v-model="form.ativo" type="checkbox" />
-                <label>Ativo</label>
+              <div class="flex items-center gap-3 pt-2">
+                <input 
+                  id="ativoCheckbox"
+                  v-model="form.ativo" 
+                  type="checkbox" 
+                  class="w-5 h-5 rounded border-border bg-page text-primary focus:ring-primary focus:ring-offset-card"
+                />
+                <label for="ativoCheckbox" class="text-sm font-medium text-text-main cursor-pointer select-none">Evento Ativo</label>
               </div>
             </template>
 
-            <div class="button-group">
-              <button type="submit" :disabled="loading">{{ loading ? 'Salvando...' : 'Salvar' }}</button>
-              <button type="button" @click="close">Cancelar</button>
+            <div class="flex flex-col sm:flex-row gap-3 pt-6 mt-4 border-t border-border">
+              <button 
+                type="button" 
+                @click="close"
+                class="flex-1 sm:flex-none px-6 py-2.5 rounded-lg font-medium text-text-main bg-page border border-border hover:bg-border transition-colors order-2 sm:order-1"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                :disabled="loading"
+                class="flex-1 px-6 py-2.5 rounded-lg font-medium text-white bg-primary hover:bg-primary-hover border border-transparent disabled:opacity-70 disabled:cursor-not-allowed transition-colors order-1 sm:order-2 flex items-center justify-center gap-2"
+              >
+                <svg v-if="loading" class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {{ loading ? 'Salvando...' : 'Salvar Evento' }}
+              </button>
             </div>
-            <p v-if="error" class="error">{{ error }}</p>
+            <p v-if="error" class="text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-sm m-0">{{ error }}</p>
           </form>
         </div>
       </div>
     </div>
+  </Transition>
   </Teleport>
 </template>
 
@@ -98,10 +183,17 @@ const loading = ref(false)
 const error = ref('')
 const isEditing = computed(() => !!props.eventId)
 
+const cores = [
+  '#3B82F6', '#10B981', '#F59E0B', '#EF4444',
+  '#8B5CF6', '#EC4899', '#06B6D4', '#F97316',
+  '#6366F1', '#14B8A6', '#84CC16', '#E11D48',
+]
+
 const form = ref({
   tipo: 'normal',
   titulo: '',
   descricao: '',
+  cor: '#3B82F6',
   data_inicio: '',
   data_fim: '',
   dia_semana: 0,
@@ -120,6 +212,7 @@ const loadEvent = async () => {
     form.value.tipo = props.eventType
     form.value.titulo = data.titulo
     form.value.descricao = data.descricao || ''
+    form.value.cor = data.cor || '#3B82F6'
     if (props.eventType === 'normal') {
       form.value.data_inicio = data.data_inicio?.slice(0, 16) || ''
       form.value.data_fim = data.data_fim?.slice(0, 16) || ''
@@ -142,7 +235,8 @@ const handleSubmit = async () => {
     const payload: any = {
       titulo: form.value.titulo,
       descricao: form.value.descricao || null,
-      criado_por: authStore.user?.id  // essencial!
+      cor: form.value.cor,
+      criado_por: authStore.user?.id
     }
 
     if (form.value.tipo === 'normal') {
@@ -181,14 +275,14 @@ const close = () => {
 }
 
 watch(() => props.visible, (newVal) => {
-  if (newVal) {
+    if (newVal) {
     if (isEditing.value) loadEvent()
     else {
-      // resetar formulário
       form.value = {
         tipo: 'normal',
         titulo: '',
         descricao: '',
+        cor: '#3B82F6',
         data_inicio: '',
         data_fim: '',
         dia_semana: 0,
@@ -203,181 +297,34 @@ watch(() => props.visible, (newVal) => {
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
+/* Herda color-scheme do :root (dark) / [data-theme="light"] (light) */
+.color-scheme-dark {
+  color-scheme: inherit;
 }
-
-.modal-container {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+.modal-enter-active {
+  transition: opacity 0.3s ease-out;
 }
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--border-color);
+.modal-leave-active {
+  transition: opacity 0.2s ease-in;
 }
-
-.close-btn {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1.5rem;
-  cursor: pointer;
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
 }
-
-.close-btn:hover {
-  color: var(--text-primary);
+.modal-enter-active .modal-card {
+  animation: modal-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.modal-body {
-  padding: 1.5rem;
+.modal-leave-active .modal-card {
+  animation: modal-pop 0.2s ease-in reverse;
 }
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 500;
-}
-
-.button-group {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-button[type="submit"] {
-  flex: 1;
-  padding: 0.75rem;
-  background: #3b82f6;
-  background: var(--btn-primary, #3b82f6);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-button[type="submit"]:hover:not(:disabled) {
-  background: #2563eb;
-  background: var(--btn-primary-hover, #2563eb);
-}
-
-button[type="button"] {
-  flex: 0.5;
-  padding: 0.75rem;
-  background: #4b5563;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-
-button[type="button"]:hover {
-  opacity: 0.9;
-}
-
-.error {
-  color: #f87171;
-  margin-top: 1rem;
-}
-
-/* --- Substitua o final do seu CSS por isto --- */
-
-input, select, textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid var(--btn-primary) !important;  /* <-- FORÇADO com !important */
-  background: var(--input-bg);
-  color: var(--text-primary);
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--btn-primary) !important;  /* <-- FORÇADO com !important */
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-}
-
-/* TEMA ESCURO - Ajuste do Select e Opções */
-:root.dark-theme select,
-body.dark-theme select {
-  background-color: #1e1e2f !important;
-  color: #e0e0e0 !important;
-}
-
-:root.dark-theme select option,
-body.dark-theme select option {
-  background-color: #2d2d3a !important;
-  color: #e0e0e0 !important;
-}
-
-:root.dark-theme select option:checked,
-body.dark-theme select option:checked {
-  background-color: #3b82f6 !important;
-  color: white !important;
-}
-
-/* TEMA ESCURO - Fundo azul escuro para TODOS os campos */
-:root.dark-theme input,
-:root.dark-theme select,
-:root.dark-theme textarea,
-:root.dark-theme input[type="datetime-local"],
-:root.dark-theme input[type="time"] {
-  background-color: #1e1e2f !important;  /* Mesmo fundo do campo "Tipo" */
-  color: #e0e0e0 !important;             /* Texto claro */
-  border-color: var(--btn-primary) !important; /* Borda azul */
-}
-
-/* Opcional: Ajuste do placeholder (texto de exemplo) no tema escuro */
-:root.dark-theme input::placeholder,
-:root.dark-theme textarea::placeholder {
-  color: #888888 !important;
-}
-
-/* TEMA CLARO */
-:root:not(.dark-theme) input,
-:root:not(.dark-theme) select,
-:root:not(.dark-theme) textarea {
-  background-color: var(--input-bg);
-  color: var(--text-primary);
-}
-
-.tipo-aviso {
-  display: block;
-  margin-top: 0.3rem;
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-}
-
-select:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 </style>
