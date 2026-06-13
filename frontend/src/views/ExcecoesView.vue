@@ -327,17 +327,17 @@ onMounted(() => {
 <style scoped>
 .exceptions-container {
   min-height: 100vh;
-  background-color: var(--bg-page);
+  background-color: var(--page);
   padding: 2rem;
-  color: var(--text-primary);
+  color: var(--text-main);
   display: flex;
   justify-content: center;
   transition: background-color 0.3s;
 }
 
 .exceptions-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
   width: 100%;
@@ -348,36 +348,36 @@ input, select, textarea {
   width: 100%;
   padding: 0.65rem;
   border-radius: 6px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text-primary);
+  border: 1px solid var(--border);
+  background: var(--page);
+  color: var(--text-main);
   font-size: 0.9rem;
   transition: border-color 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--btn-primary);
+  border-color: var(--primary);
 }
 
 /* Estilos Estruturais das Exceções */
-.card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
-.back-btn { background: none; border: none; color: var(--text-primary); cursor: pointer; }
+.card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+.back-btn { background: none; border: none; color: var(--text-main); cursor: pointer; }
 .back-btn svg { width: 1.2rem; height: 1.2rem; }
-.event-details { margin-bottom: 2rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px; }
+.event-details { margin-bottom: 2rem; padding: 1rem; background: var(--hover-bg); border-radius: 8px; }
 .main-layout { display: flex; flex-direction: column; gap: 2rem; }
 .form-group { margin-bottom: 1.2rem; }
 .helper-text { font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 0.3rem; }
-.btn-submit { width: 100%; padding: 0.8rem; background: var(--btn-primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s;}
-.btn-submit:hover { background: var(--btn-primary-hover); }
+.btn-submit { width: 100%; padding: 0.8rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s;}
+.btn-submit:hover { background: var(--primary-hover); }
 .btn-icon { width: 1rem; height: 1rem; margin-right: 0.4rem; }
-.success-msg { margin-top: 0.75rem; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
-.exc-card { border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: var(--bg-page); }
+.success-msg { margin-top: 0.75rem; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+.exc-card { border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: var(--page); }
 .exc-badge-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
 .exc-badge { padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-.badge-cancel { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-.badge-resched { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-.btn-delete-exc { background: none; border: none; color: #ef4444; cursor: pointer; }
+.badge-cancel { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+.badge-resched { background: rgba(245, 158, 11, 0.2); color: var(--accent-warm); }
+.btn-delete-exc { background: none; border: none; color: var(--danger); cursor: pointer; }
 .empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
 .empty-state svg { width: 2rem; height: 2rem; margin-bottom: 0.5rem; }
 .loading-icon { width: 1rem; height: 1rem; margin-right: 0.5rem; }
