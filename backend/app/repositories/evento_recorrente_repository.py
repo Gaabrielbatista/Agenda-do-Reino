@@ -44,8 +44,8 @@ class EventoRecorrenteRepository:
             dia_semana=_validate_dia_semana(dados['dia_semana']),
             hora_inicio=_parse_time(dados['hora_inicio']),
             hora_fim=_parse_time(dados.get('hora_fim')),
+            cor=dados.get('cor'),
             criado_por=dados['criado_por']
-            # ativo default=True definido no model
         )
         db.session.add(evento)
         db.session.commit()
@@ -63,6 +63,8 @@ class EventoRecorrenteRepository:
             evento.hora_inicio = _parse_time(dados['hora_inicio'])
         if 'hora_fim' in dados:
             evento.hora_fim = _parse_time(dados['hora_fim'])
+        if 'cor' in dados:
+            evento.cor = dados['cor']
         if 'ativo' in dados:
             if not isinstance(dados['ativo'], bool):
                 raise ValueError("ativo deve ser true ou false")

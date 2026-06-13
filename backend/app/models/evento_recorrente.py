@@ -11,6 +11,7 @@ class EventoRecorrente(db.Model):
     id = Column(Integer, primary_key=True)
     titulo = Column(String, nullable=False)
     descricao = Column(String, nullable=True)
+    cor = Column(String(7), nullable=True, default=None)
     dia_semana = Column(Integer, nullable=False)  # 0 = segunda ... 6 = domingo
     hora_inicio = Column(Time, nullable=False)
     hora_fim = Column(Time, nullable=True)
