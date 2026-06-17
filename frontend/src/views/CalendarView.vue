@@ -416,6 +416,9 @@ const calendarOptions: CalendarOptions = {
   initialView: currentView.value,
   weekends: true,
   height: '100%',
+  dayMaxEvents: true,
+  moreLinkClick: 'popover',
+
   eventTimeFormat: {
     hour: '2-digit',
     minute: '2-digit',
@@ -462,11 +465,11 @@ const calendarOptions: CalendarOptions = {
     el.style.setProperty('--evt-g', String(_origG ?? rgb.g))
     el.style.setProperty('--evt-b', String(_origB ?? rgb.b))
 
-    el.style.background = `linear-gradient(135deg, ${lightColor}, ${bgColor})`
-    el.style.borderColor = 'transparent'
+    // el.style.background = `linear-gradient(135deg, ${lightColor}, ${bgColor})`
+    // el.style.borderColor = 'transparent'
     el.style.borderRadius = '12px'
-    el.style.padding = '0.6rem 0.9rem'
-    el.style.color = info.event.textColor || getContrastingTextColor()
+    el.style.padding = '1.5rem 2rem'
+    // el.style.color = info.event.textColor || getContrastingTextColor()
     el.style.boxShadow = `
       inset 0 0 4px rgba(255,255,255,0.2),
       0 0 12px 4px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.5),
@@ -621,7 +624,7 @@ const logout = () => {
   background-color: var(--card);
   color: var(--primary);
   border-color: var(--border);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(91, 77, 255, 0.5)
 }
 
 @media (max-width: 640px) {
@@ -672,6 +675,8 @@ const logout = () => {
 :deep(.fc-event) {
   border-radius: 12px !important;
   overflow: visible !important;
+  transition: 0.28s;
+  cursor: pointer;
 }
 
 /* Inner wrapper — time on top, title below */
@@ -679,7 +684,7 @@ const logout = () => {
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
-  gap: 0.15rem;
+  gap: 0.2rem;
 }
 
 /* Fix FC's border-radius reset for middle events in month view */
@@ -711,12 +716,12 @@ const logout = () => {
 
 /* ═══ Hover ═══ */
 :deep(.fc-event:hover) {
-  transform: scale(1.02) !important;
-  filter: brightness(1.04) !important;
+  transform: scale(1.04) !important;
+  filter: brightness(1.06) !important;
   box-shadow:
-    inset 0 0 6px rgba(255,255,255,0.3),
-    0 0 16px 6px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.45),
-    0 0 10px rgba(255,255,255,0.3) !important;
+    0 0 12px 4px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.4),
+    0 0 24px 8px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.2),
+    0 0 40px 12px rgba(255,255,255,0.1) !important;
 }
 
 :deep(.fc-event:hover::before) {
@@ -728,7 +733,7 @@ const logout = () => {
 :deep(.fc-event-title) {
   font-weight: 600;
   font-size: 1rem;
-  line-height: 1.35;
+  line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -761,17 +766,17 @@ const logout = () => {
 }
 
 :deep(.fc-daygrid-day-frame) {
-  min-height: 110px !important;
+  min-height: 0 !important;
 }
 
 /* Week / day view — timegrid event */
 :deep(.fc-timegrid-event) {
   border-radius: 8px !important;
-  padding: 0.35rem 0.5rem !important;
+  padding: 0.7rem 1rem !important;
 }
 
 :deep(.fc-timegrid-event .fc-event-main) {
-  gap: 0.1rem;
+  gap: 0.15rem;
 }
 
 :deep(.fc-timegrid-event .fc-event-time) {
@@ -794,12 +799,25 @@ const logout = () => {
 }
 
 :deep(.fc-timegrid-slot) {
-  height: 48px !important;
+  height: 60px !important;
+}
+
+/* Allow day-cell containers to show the event glow */
+:deep(.fc-day) {
+  overflow: visible !important;
+}
+:deep(.fc-daygrid-day) {
+  overflow: visible !important;
+}
+:deep(.fc-daygrid-day-frame) {
+  overflow: visible !important;
 }
 
 :deep(.fc-daygrid-event) {
-  width: 97% !important;
-  margin: 4px auto !important;
+  width: 98% !important;
+  margin: 2px auto !important;
+  padding: 0.4rem 0.6rem !important;
+  border-radius: 8px !important;
 }
 
 /* ═══ Responsive — smaller screens ═══ */
@@ -811,14 +829,46 @@ const logout = () => {
     font-size: 0.75rem;
   }
   :deep(.fc-daygrid-event) {
-    width: 95% !important;
-    margin: 3px auto !important;
+    width: 96% !important;
+    margin: 2px auto !important;
+    padding: 0.2rem 0.4rem !important;
   }
   :deep(.fc-timegrid-slot) {
-    height: 40px !important;
+    height: 50px !important;
   }
   :deep(.fc-daygrid-day-frame) {
-    min-height: 90px !important;
+    min-height: 0 !important;
   }
+}
+
+/* "+X mais" link */
+:deep(.fc-daygrid-more-link) {
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+:deep(.fc-daygrid-more-link:hover) {
+  background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+  text-decoration: none;
+}
+
+/* Popover do "+X mais" */
+:deep(.fc-popover) {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+:deep(.fc-popover-header) {
+  background-color: var(--sidebar) !important;
+  color: var(--text-main) !important;
+  padding: 0.75rem 1rem !important;
+}
+:deep(.fc-popover-body) {
+  padding: 0.5rem !important;
 }
 </style>
