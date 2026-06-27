@@ -19,6 +19,7 @@ def _serialize_evento(evento):
         'dia_semana_nome': DIAS_SEMANA[evento.dia_semana],
         'hora_inicio': evento.hora_inicio.strftime('%H:%M') if evento.hora_inicio else None,
         'hora_fim': evento.hora_fim.strftime('%H:%M') if evento.hora_fim else None,
+        'cor': evento.cor,
         'ativo': evento.ativo,
         'criado_por': evento.criado_por,
     }

@@ -3,7 +3,6 @@
     <h1>{{ isEditing ? 'Editar Evento' : 'Novo Evento' }}</h1>
 
     <form @submit.prevent="handleSubmit">
-      <!-- Campos comuns -->
       <div class="form-group">
         <label for="titulo">Título *</label>
         <input id="titulo" v-model="form.titulo" type="text" required />
@@ -22,7 +21,20 @@
         </select>
       </div>
 
-      <!-- Campos para evento normal -->
+      <div class="form-group">
+        <label>Cor</label>
+        <div class="color-picker">
+          <div
+            v-for="c in cores"
+            :key="c"
+            class="color-swatch"
+            :class="{ selected: form.cor === c }"
+            :style="{ backgroundColor: c }"
+            @click="form.cor = c"
+          ></div>
+        </div>
+      </div>
+
       <template v-if="form.tipo === 'normal'">
         <div class="form-group">
           <label for="data_inicio">Data e Hora de Início *</label>
@@ -34,7 +46,6 @@
         </div>
       </template>
 
-      <!-- Campos para evento recorrente -->
       <template v-if="form.tipo === 'recorrente'">
         <div class="form-group">
           <label for="dia_semana">Dia da semana *</label>
@@ -88,21 +99,25 @@ const eventId = computed(() => route.params.id ? Number(route.params.id) : null)
 const loading = ref(false)
 const error = ref('')
 
+const cores = [
+  '#3B82F6', '#10B981', '#F59E0B', '#EF4444',
+  '#8B5CF6', '#EC4899', '#06B6D4', '#F97316',
+  '#6366F1', '#14B8A6', '#84CC16', '#E11D48',
+]
+
 const form = ref({
   tipo: 'normal',
   titulo: '',
   descricao: '',
-  // normal
+  cor: '#3B82F6',
   data_inicio: '',
   data_fim: '',
-  // recorrente
   dia_semana: 0,
   hora_inicio: '',
   hora_fim: '',
   ativo: true
 })
 
-// Carrega dados se for edição
 const loadEvent = async () => {
   if (!isEditing.value || !eventType.value || !eventId.value) return
   try {
@@ -113,6 +128,7 @@ const loadEvent = async () => {
     form.value.tipo = eventType.value
     form.value.titulo = data.titulo
     form.value.descricao = data.descricao || ''
+    form.value.cor = data.cor || '#3B82F6'
     if (eventType.value === 'normal') {
       form.value.data_inicio = data.data_inicio?.slice(0, 16) || ''
       form.value.data_fim = data.data_fim?.slice(0, 16) || ''
@@ -136,6 +152,7 @@ const handleSubmit = async () => {
     let payload: any = {
       titulo: form.value.titulo,
       descricao: form.value.descricao || null,
+      cor: form.value.cor,
       criado_por: authStore.user?.id
     }
 
@@ -143,8 +160,6 @@ const handleSubmit = async () => {
       if (!form.value.data_inicio) throw new Error('Data/hora de início é obrigatória')
       payload.data_inicio = form.value.data_inicio
       payload.data_fim = form.value.data_fim || null
-      // criado_por será obtido do token pelo backend
-
       if (isEditing.value && eventType.value === 'normal') {
         await api.put(`/eventos/normais/${eventId.value}`, payload)
       } else {
@@ -188,16 +203,16 @@ onMounted(() => {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  color: var(--text-primary);
+  color: var(--text-main);
   transition: all 0.3s;
 }
 
 h1 {
   margin-top: 0;
-  color: var(--text-primary);
+  color: var(--text-main);
 }
 
 .form-group {
@@ -214,14 +229,38 @@ input, select, textarea {
   width: 100%;
   padding: 0.6rem;
   border-radius: 6px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text-primary);
+  border: 1px solid var(--border);
+  background: var(--page);
+  color: var(--text-main);
   transition: border-color 0.2s;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--btn-primary);
+  border-color: var(--primary);
+}
+
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.15s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.selected {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--primary);
 }
 </style>

@@ -1,81 +1,111 @@
 <template>
-  <div class="profile-container">
-    <div class="profile-card">
-      <div class="card-header">
-        <button class="back-btn" @click="goBack" title="Voltar para a Agenda">
-          <ArrowLeftIcon class="icon-svg" aria-hidden="true" />
+  <div class="min-h-screen bg-page p-4 flex justify-center items-center">
+    <div class="w-full max-w-lg bg-card rounded-2xl shadow-2xl border border-border overflow-hidden">
+      <div class="px-6 py-5 border-b border-border flex items-center gap-4">
+        <button 
+          class="p-2 -ml-2 text-text-secondary hover:text-text-main hover:bg-border/50 rounded-lg transition-colors" 
+          @click="goBack" 
+          title="Voltar para a Agenda"
+        >
+          <ArrowLeftIcon class="w-6 h-6" aria-hidden="true" />
         </button>
-        <h2>Meu Perfil</h2>
+        <h2 class="m-0 text-xl font-semibold tracking-wide text-text-main">Meu Perfil</h2>
       </div>
 
-      <div class="avatar-container">
-        <UserCircleIcon class="avatar-icon" aria-hidden="true" />
-        <span class="user-badge" :class="userRoleClass">{{ userRoleLabel }}</span>
-      </div>
-
-      <form @submit.prevent="handleUpdate">
-        <div class="form-group">
-          <label for="nome">Nome</label>
-          <div class="input-wrapper">
-            <UserIcon class="input-icon" aria-hidden="true" />
-            <input
-              id="nome"
-              v-model="form.nome"
-              type="text"
-              required
-              :disabled="!isAdmin || loading"
-              placeholder="Seu nome completo"
-            />
-          </div>
+      <div class="p-8">
+        <div class="flex flex-col items-center mb-8">
+          <UserCircleIcon class="w-24 h-24 text-text-secondary mb-3" aria-hidden="true" />
+          <span 
+            :class="['px-3 py-1 rounded-full text-xs font-bold tracking-wider', authStore.user?.tipo === 'admin' ? 'bg-primary/20 text-primary' : 'bg-emerald-500/20 text-emerald-400']"
+          >
+            {{ userRoleLabel }}
+          </span>
         </div>
 
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <div class="input-wrapper">
-            <EnvelopeIcon class="input-icon" aria-hidden="true" />
-            <input
-              id="email"
-              v-model="form.email"
-              type="email"
-              required
-              :disabled="!isAdmin || loading"
-              placeholder="seu.email@exemplo.com"
-            />
-          </div>
-        </div>
-
-        <!-- Só mostra campos de edição se for admin -->
-        <template v-if="isAdmin">
-          <div class="form-group">
-            <label for="senha">Nova Senha (deixe em branco para manter)</label>
-            <div class="input-wrapper">
-              <LockClosedIcon class="input-icon" aria-hidden="true" />
+        <form @submit.prevent="handleUpdate" class="space-y-5">
+          <div class="space-y-1.5">
+            <label for="nome" class="block text-sm font-medium text-text-main">Nome</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <UserIcon class="h-5 w-5 text-text-secondary" aria-hidden="true" />
+              </div>
               <input
-                id="senha"
-                v-model="form.senha"
-                type="password"
-                :disabled="loading"
-                placeholder="Mínimo 6 caracteres"
+                id="nome"
+                v-model="form.nome"
+                type="text"
+                required
+                :disabled="!isAdmin || loading"
+                placeholder="Seu nome completo"
+                class="w-full bg-page border border-border text-text-main rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-text-secondary/50"
               />
             </div>
           </div>
 
-          <button type="submit" class="btn-save" :disabled="loading">
-            <ArrowDownTrayIcon class="btn-icon" aria-hidden="true" />
-            {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
-          </button>
-        </template>
-        <template v-else>
-          <div class="info-alert">
-            <InformationCircleIcon class="btn-icon" aria-hidden="true" />
-            Apenas administradores podem atualizar os dados cadastrais.
+          <div class="space-y-1.5">
+            <label for="email" class="block text-sm font-medium text-text-main">E-mail</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <EnvelopeIcon class="h-5 w-5 text-text-secondary" aria-hidden="true" />
+              </div>
+              <input
+                id="email"
+                v-model="form.email"
+                type="email"
+                required
+                :disabled="!isAdmin || loading"
+                placeholder="seu.email@exemplo.com"
+                class="w-full bg-page border border-border text-text-main rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-text-secondary/50"
+              />
+            </div>
           </div>
-        </template>
 
-        <p v-if="errorMsg" class="message error-msg">
-          <ExclamationTriangleIcon class="btn-icon" aria-hidden="true" /> {{ errorMsg }}
-        </p>
-      </form>
+          <template v-if="isAdmin">
+            <div class="space-y-1.5">
+              <label for="senha" class="block text-sm font-medium text-text-main">Nova Senha (deixe em branco para manter)</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <LockClosedIcon class="h-5 w-5 text-text-secondary" aria-hidden="true" />
+                </div>
+                <input
+                  id="senha"
+                  v-model="form.senha"
+                  type="password"
+                  :disabled="loading"
+                  placeholder="Mínimo 6 caracteres"
+                  class="w-full bg-page border border-border text-text-main rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-text-secondary/50"
+                />
+              </div>
+            </div>
+
+            <div class="pt-4">
+              <button 
+                type="submit" 
+                :disabled="loading"
+                class="w-full flex justify-center items-center gap-2 bg-primary hover:bg-primary-hover text-white font-bold py-3 px-4 rounded-xl transition-all disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-primary/20"
+              >
+                <svg v-if="loading" class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <ArrowDownTrayIcon v-else class="w-5 h-5" aria-hidden="true" />
+                {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
+              </button>
+            </div>
+          </template>
+          
+          <template v-else>
+            <div class="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-xl flex items-start gap-3">
+              <InformationCircleIcon class="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
+              <p class="m-0 text-sm text-text-main">Apenas administradores podem atualizar os dados cadastrais.</p>
+            </div>
+          </template>
+
+          <p v-if="errorMsg" class="mt-4 p-3 bg-red-400/10 border border-red-400/20 rounded-xl flex items-center gap-2 text-sm text-red-400 m-0">
+            <ExclamationTriangleIcon class="w-5 h-5 shrink-0" aria-hidden="true" /> 
+            {{ errorMsg }}
+          </p>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -109,17 +139,12 @@ const form = ref({
   email: '',
   senha: ''
 })
-// Keep original values to detect unchanged submissions
 const original = ref({ nome: '', email: '' })
 
 const isAdmin = computed(() => authStore.user?.tipo === 'admin')
 
 const userRoleLabel = computed(() => {
   return authStore.user?.tipo === 'admin' ? 'Administrador' : 'Membro'
-})
-
-const userRoleClass = computed(() => {
-  return authStore.user?.tipo === 'admin' ? 'badge-admin' : 'badge-membro'
 })
 
 const goBack = () => {
@@ -130,7 +155,6 @@ onMounted(() => {
   if (authStore.user) {
     form.value.nome = authStore.user.nome
     form.value.email = authStore.user.email
-    // Guarda os valores originais
     original.value = { nome: authStore.user.nome, email: authStore.user.email }
   } else {
     router.push('/login')
@@ -140,7 +164,6 @@ onMounted(() => {
 const handleUpdate = async () => {
   if (!authStore.user?.id) return
   loading.value = true
-  // Prevent submission if nothing changed
   if (form.value.nome === original.value.nome &&
       form.value.email === original.value.email &&
       !form.value.senha.trim()) {
@@ -165,17 +188,14 @@ const handleUpdate = async () => {
 
     const response = await api.put(`/usuarios/${authStore.user.id}`, payload)
     
-    // Atualiza os dados no store
     authStore.user = {
       ...authStore.user,
       nome: response.data.nome,
       email: response.data.email
     }
     
-    // Limpa a senha do form
     form.value.senha = ''
     notifySuccess('Perfil atualizado com sucesso!')
-    // After updating profile, navigate back to calendar view
     router.push('/')
   } catch (err: any) {
     console.error(err)
@@ -186,117 +206,3 @@ const handleUpdate = async () => {
   }
 }
 </script>
-
-<style scoped>
-.profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 1rem;
-}
-
-.back-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  color: var(--text-primary);
-  font-size: 1.2rem;
-}
-
-.back-btn i {
-  pointer-events: none;
-}
-
-.profile-card {
-  background: var(--bg-card);
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  max-width: 500px;
-  width: 100%;
-  border: 1px solid var(--border-color);
-}
-
-.avatar-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.avatar-icon {
-  width: 5rem;
-  height: 5rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.5rem;
-}
-
-.input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 1rem;
-  width: 1rem;
-  height: 1rem;
-  color: var(--text-secondary);
-}
-
-.btn-icon {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.4rem;
-}
-
-.input-wrapper input {
-  width: 100%;
-  padding-left: 2.8rem;
-  background-color: var(--input-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--input-border);
-  border-radius: 8px;
-}
-
-.input-wrapper input::placeholder {
-  color: var(--text-secondary);
-}
-.btn-save {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 1rem;
-  background: var(--btn-primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.btn-save:hover {
-  background: var(--btn-primary-hover);
-}
-
-.btn-save:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.info-alert {
-  margin-top: 1rem;
-  padding: 0.8rem;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-</style>

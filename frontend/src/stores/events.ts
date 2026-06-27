@@ -20,6 +20,5 @@ export const useEventsStore = defineStore('events', {
       const response = await api.post(endpoint, data)
       return response.data
     }
-    // ... outros métodos (update, delete, exceptions)
   }
 })

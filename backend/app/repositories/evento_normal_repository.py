@@ -25,6 +25,7 @@ class EventoNormalRepository:
         evento = EventoNormal(
             titulo=dados['titulo'],
             descricao=dados.get('descricao'),
+            cor=dados.get('cor'),
             data_inicio=_parse_datetime(dados['data_inicio']),
             data_fim=_parse_datetime(dados.get('data_fim')),
             criado_por=dados['criado_por']
@@ -43,6 +44,8 @@ class EventoNormalRepository:
             evento.data_inicio = _parse_datetime(dados['data_inicio'])
         if 'data_fim' in dados:
             evento.data_fim = _parse_datetime(dados['data_fim'])
+        if 'cor' in dados:
+            evento.cor = dados['cor']
         if 'status' in dados:
             status_raw = dados['status']
             if isinstance(status_raw, str):

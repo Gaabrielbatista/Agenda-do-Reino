@@ -13,17 +13,18 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
   web:
     build: ./backend
     restart: always
-    # ports:
-    #   - "5000:5000"
+    ports:
+      - "5000:5000"
     volumes:
       - ./backend:/app
     env_file:
       - .env
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      DATABASE_URL: ${DATABASE_URL}
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/agenda?inicio=2026-01-01&fim=2026-01-31')"]
       interval: 15s
@@ -38,9 +39,11 @@ services:
     build: ./frontend
     ports:
       - "80:80"
+    environment:
+      - BACKEND_HOST=web
     depends_on:
       web:
         condition: service_healthy
 
 volumes:
-   db_data:
+  db_data:

@@ -25,6 +25,7 @@ def _serialize_normal(evento: EventoNormal) -> dict:
         'data_inicio': evento.data_inicio.isoformat() if evento.data_inicio else None,
         'data_fim': evento.data_fim.isoformat() if evento.data_fim else None,
         'status': evento.status.value,
+        'cor': evento.cor,
         'criado_por': evento.criado_por,
     }
 

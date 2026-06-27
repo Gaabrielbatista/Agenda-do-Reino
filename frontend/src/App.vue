@@ -9,7 +9,7 @@ const { toasts, removeToast } = useToast()
 
 <template>
   <router-view />
-  <div class="toast-wrapper">
+  <div class="fixed top-20 right-5 flex flex-col gap-3 z-[11000] items-end pointer-events-none">
     <ToastNotification
       v-for="toast in toasts"
       :key="toast.id"
@@ -17,19 +17,7 @@ const { toasts, removeToast } = useToast()
       :message="toast.message"
       :type="toast.type"
       @close="removeToast(toast.id)"
+      class="pointer-events-auto"
     />
   </div>
 </template>
-
-<style>
-.toast-wrapper {
-  position: fixed;
-  top: 70px;
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  z-index: 11000;
-  align-items: flex-end;
-}
-</style>

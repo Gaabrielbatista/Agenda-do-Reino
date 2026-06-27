@@ -1,8 +1,16 @@
 <template>
-  <div class="toast-notification" :class="type" @click="closeToast">
-    <component :is="iconComponent" class="toast-icon" aria-hidden="true" />
-    <div class="toast-content">
-      <p class="toast-message">{{ message }}</p>
+  <div 
+    class="flex items-center gap-3 max-w-xs p-4 rounded-xl shadow-2xl backdrop-blur-md cursor-pointer transition-all duration-200 hover:-translate-y-0.5 border"
+    :class="[
+      type === 'success' 
+        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
+        : 'bg-red-500/10 border-red-500/30 text-red-400'
+    ]"
+    @click="closeToast"
+  >
+    <component :is="iconComponent" class="w-6 h-6 shrink-0" aria-hidden="true" />
+    <div class="flex-1">
+      <p class="m-0 text-sm font-medium text-text-main leading-snug">{{ message }}</p>
     </div>
   </div>
 </template>
@@ -34,64 +42,3 @@ const closeToast = () => {
   emit('close')
 }
 </script>
-
-<style scoped>
-.toast-notification {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  max-width: 320px;
-  padding: 1.1rem 1.3rem;
-  border-radius: 14px;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  opacity: 0.98;
-}
-
-.toast-notification:hover {
-  transform: translateY(-1px);
-}
-
-.toast-icon {
-  width: 1rem;
-  height: 1rem;
-  flex-shrink: 0;
-}
-
-.toast-content {
-  flex: 1;
-}
-
-.toast-message {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.4;
-  color: var(--text-primary);
-}
-
-.toast-notification.success {
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-}
-
-.toast-notification.error {
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-body.dark-theme .toast-notification.success {
-  background: rgba(16, 185, 129, 0.18);
-  border-color: rgba(16, 185, 129, 0.35);
-}
-
-body.dark-theme .toast-notification.error {
-  background: rgba(248, 113, 113, 0.18);
-  border-color: rgba(248, 113, 113, 0.35);
-}
-
-body.dark-theme .toast-message {
-  color: var(--text-primary);
-}
-</style>

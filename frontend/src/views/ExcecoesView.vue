@@ -11,14 +11,12 @@
         </div>
       </div>
 
-      <!-- Informações do Evento Recorrente -->
       <div class="event-details" v-if="evento">
         <p><strong>Recorrência:</strong> {{ diasSemana[evento.dia_semana] }} às {{ evento.hora_inicio }} <span v-if="evento.hora_fim">até {{ evento.hora_fim }}</span></p>
         <p v-if="evento.descricao"><strong>Descrição:</strong> {{ evento.descricao }}</p>
       </div>
 
       <div class="main-layout">
-        <!-- Listagem de Exceções Existentes -->
         <div class="exceptions-list-section">
           <h3>Exceções Configuradas</h3>
           
@@ -57,7 +55,6 @@
           </div>
         </div>
 
-        <!-- Formulário para Criar Nova Exceção (Apenas Admin) -->
         <div class="form-section" v-if="isAdmin && evento">
           <h3>Nova Exceção</h3>
           
@@ -191,7 +188,6 @@ const loadEvent = async () => {
   try {
     const { data } = await api.get(`/eventos/recorrentes/${eventId}`)
     evento.value = data
-    // Inicializa a hora padrão de início para conveniência
     form.value.hora_nova_inicio = data.hora_inicio
     form.value.hora_nova_fim = data.hora_fim || ''
   } catch (err) {
@@ -225,7 +221,6 @@ const formatNewDateTime = (exc: any) => {
     const d = new Date(exc.data_nova)
     output += d.toLocaleDateString('pt-BR')
   } else {
-    // Mesma data do original
     const d = new Date(exc.data_original)
     output += d.toLocaleDateString('pt-BR')
   }
@@ -239,15 +234,12 @@ const formatNewDateTime = (exc: any) => {
 const validateOriginalDateWeekday = () => {
   if (!form.value.data_original_date || !evento.value) return true
   
-  // Date input está em YYYY-MM-DD local, criamos um objeto data correspondente
   const parts = form.value.data_original_date.split('-')
   const year = parseInt(parts[0])
   const month = parseInt(parts[1]) - 1
   const day = parseInt(parts[2])
   const d = new Date(year, month, day)
   
-  // JS weekday: 0=Domingo, 1=Segunda, ..., 6=Sábado
-  // Backend weekday: 0=Segunda, 1=Terça, ..., 6=Domingo
   let jsDay = d.getDay()
   let backendDay = jsDay === 0 ? 6 : jsDay - 1
   
@@ -265,7 +257,6 @@ const handleSubmit = async () => {
   }
 
   try {
-    // Monta a data_original adicionando o horário de início original do evento
     const dataOriginalStr = `${form.value.data_original_date}T${evento.value.hora_inicio}:00`
     const tipoPayload = form.value.tipo === 'cancelamento' ? 'CANCELAMENTO' : 'REMARCACAO'
     const payload: any = {
@@ -288,7 +279,6 @@ const handleSubmit = async () => {
 
     await api.post('/eventos/excecoes', payload)
 
-    // Sucesso, recarrega exceções e reseta form
     await loadExceptions()
     form.value.data_original_date = ''
     form.value.data_nova_date = ''
@@ -327,17 +317,17 @@ onMounted(() => {
 <style scoped>
 .exceptions-container {
   min-height: 100vh;
-  background-color: var(--bg-page);
+  background-color: var(--page);
   padding: 2rem;
-  color: var(--text-primary);
+  color: var(--text-main);
   display: flex;
   justify-content: center;
   transition: background-color 0.3s;
 }
 
 .exceptions-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1.5rem;
   width: 100%;
@@ -348,36 +338,35 @@ input, select, textarea {
   width: 100%;
   padding: 0.65rem;
   border-radius: 6px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text-primary);
+  border: 1px solid var(--border);
+  background: var(--page);
+  color: var(--text-main);
   font-size: 0.9rem;
   transition: border-color 0.2s ease;
 }
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--btn-primary);
+  border-color: var(--primary);
 }
 
-/* Estilos Estruturais das Exceções */
-.card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
-.back-btn { background: none; border: none; color: var(--text-primary); cursor: pointer; }
+.card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+.back-btn { background: none; border: none; color: var(--text-main); cursor: pointer; }
 .back-btn svg { width: 1.2rem; height: 1.2rem; }
-.event-details { margin-bottom: 2rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 8px; }
+.event-details { margin-bottom: 2rem; padding: 1rem; background: var(--hover-bg); border-radius: 8px; }
 .main-layout { display: flex; flex-direction: column; gap: 2rem; }
 .form-group { margin-bottom: 1.2rem; }
 .helper-text { font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 0.3rem; }
-.btn-submit { width: 100%; padding: 0.8rem; background: var(--btn-primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s;}
-.btn-submit:hover { background: var(--btn-primary-hover); }
+.btn-submit { width: 100%; padding: 0.8rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s;}
+.btn-submit:hover { background: var(--primary-hover); }
 .btn-icon { width: 1rem; height: 1rem; margin-right: 0.4rem; }
-.success-msg { margin-top: 0.75rem; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
-.exc-card { border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: var(--bg-page); }
+.success-msg { margin-top: 0.75rem; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+.exc-card { border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: var(--page); }
 .exc-badge-row { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
 .exc-badge { padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-.badge-cancel { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-.badge-resched { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-.btn-delete-exc { background: none; border: none; color: #ef4444; cursor: pointer; }
+.badge-cancel { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+.badge-resched { background: rgba(245, 158, 11, 0.2); color: var(--accent-warm); }
+.btn-delete-exc { background: none; border: none; color: var(--danger); cursor: pointer; }
 .empty-state { text-align: center; padding: 2rem; color: var(--text-secondary); }
 .empty-state svg { width: 2rem; height: 2rem; margin-bottom: 0.5rem; }
 .loading-icon { width: 1rem; height: 1rem; margin-right: 0.5rem; }

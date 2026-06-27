@@ -20,6 +20,7 @@ class EventoRecorrenteCreateSchema(Schema):
 
     titulo = fields.Str(required=True, validate=validate.Length(min=1, max=200))
     descricao = fields.Str(load_default=None, allow_none=True)
+    cor = fields.Str(load_default=None, allow_none=True, validate=validate.Regexp(r'^#[0-9A-Fa-f]{6}$'))
     dia_semana = fields.Int(required=True, strict=True, validate=validate.Range(min=0, max=6))
     hora_inicio = fields.Str(required=True)
     hora_fim = fields.Str(load_default=None, allow_none=True)
@@ -41,6 +42,7 @@ class EventoRecorrenteUpdateSchema(Schema):
 
     titulo = fields.Str(validate=validate.Length(min=1, max=200))
     descricao = fields.Str(allow_none=True)
+    cor = fields.Str(allow_none=True, validate=validate.Regexp(r'^#[0-9A-Fa-f]{6}$'))
     dia_semana = fields.Int(strict=True, validate=validate.Range(min=0, max=6))
     hora_inicio = fields.Str()
     hora_fim = fields.Str(allow_none=True)

@@ -1,71 +1,45 @@
-/* Theme variables for AgendaReino */
-
 :root[data-theme="light"] {
-  /* Palette */
-  --color-primary: #3b82f6;          /* Tailwind blue-500 */
-  --color-primary-bg: #2563eb;      /* Darker shade for hover/active */
-  --color-secondary: #10b981;        /* Tailwind green-500 */
-  --color-danger: #ef4444;          /* Tailwind red-500 */
-  --color-bg-page: #f9fafb;         /* Light page background */
-  --color-bg-surface: #ffffff;      /* Card / modal background */
-  --color-bg-sidebar: #e5e7eb;      /* Sidebar background */
-  --color-text-primary: #111827;   /* Almost black */
-  --color-text-muted: #6b7280;     /* Gray-500 */
-  --color-border: #d1d5db;          /* Gray-300 */
-  --color-hover-bg: #f3f4f6;        /* Light hover */
+  color-scheme: light;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.15);
+  --page: #F3F4F6;
+  --card: #FFFFFF;
+  --sidebar: #E9ECEF;
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --accent-warm: #D97706;
+  --accent-cool: #0284C7;
+  --success: #059669;
+  --danger: #DC2626;
+  --border: #E5E7EB;
+  --text-main: #111827;
+  --text-secondary: #6B7280;
+  --hover-bg: #F3F4F6;
 
-  /* Border radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --glow-primary: rgba(37, 99, 235, 0.08);
+  --glow-warm: rgba(217, 119, 6, 0.08);
 
-  /* Font */
-  --font-family-base: 'Inter', Helvetica, Arial, sans-serif;
-  --font-weight-regular: 400;
-  --font-weight-bold: 600;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.08);
+  --shadow-glow: 0 0 30px var(--glow-primary);
 
-  /* Spacing */
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
+  --fc-page-bg-color: #FFFFFF;
+  --fc-neutral-bg-color: #F9FAFB;
+  --fc-neutral-text-color: #6B7280;
+  --fc-border-color: #E5E7EB;
+  --fc-button-bg-color: #FFFFFF;
+  --fc-button-border-color: #D1D5DB;
+  --fc-button-hover-bg-color: #F3F4F6;
+  --fc-button-hover-border-color: #9CA3AF;
+  --fc-button-active-bg-color: #2563EB;
+  --fc-button-active-border-color: #2563EB;
+  --fc-today-bg-color: rgba(37, 99, 235, 0.05);
+  --fc-event-bg-color: #2563EB;
+  --fc-event-text-color: #FFFFFF;
 }
 
-:root[data-theme="dark"] {
-  /* Palette */
-  --color-primary: #3b82f6;
-  --color-primary-bg: #2563eb;
-  --color-secondary: #10b981;
-  --color-danger: #ef4444;
-  --color-bg-page: #111827;          /* Dark page background */
-  --color-bg-surface: #1f2937;       /* Card / modal background */
-  --color-bg-sidebar: #1e293b;       /* Sidebar background */
-  --color-text-primary: #f9fafb;    /* Light text */
-  --color-text-muted: #9ca3af;      /* Gray-400 */
-  --color-border: #374151;          /* Dark border */
-  --color-hover-bg: #374151;        /* Dark hover */
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.7);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.6);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.5);
-
-  /* Border radius (same as light) */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-
-  /* Font */
-  --font-family-base: 'Inter', Helvetica, Arial, sans-serif;
-  --font-weight-regular: 400;
-  --font-weight-bold: 600;
-
-  /* Spacing */
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
+:root[data-theme="light"] .fc-scrollgrid,
+:root[data-theme="light"] .fc-theme-standard td,
+:root[data-theme="light"] .fc-theme-standard th {
+  border-color: #E5E7EB;
 }

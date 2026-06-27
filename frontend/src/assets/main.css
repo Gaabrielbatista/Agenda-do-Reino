@@ -1,35 +1,148 @@
-@import './base.css';
+@import "tailwindcss";
+@import "./themes/themes.css";
+@config "../../tailwind.config.js";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
+@layer base {
   body {
-    display: flex;
-    place-items: center;
+    @apply bg-page text-text-main font-sans antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+:root {
+  color-scheme: light;
+
+  --page: #F9FAFB;
+  --card: #FFFFFF;
+  --sidebar: #FFFFFF;
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --border: #E5E7EB;
+  --text-main: #111827;
+  --text-secondary: #4B5563;
+  --success: #10B981;
+  --danger: #EF4444;
+  --accent-warm: #F59E0B;
+  --accent-cool: #06B6D4;
+  --hover-bg: #F3F4F6;
+
+  --glow-primary: rgba(37, 99, 235, 0.05);
+  --glow-warm: rgba(245, 158, 11, 0.05);
+
+  --event-culto: #2563EB;
+  --event-escola: #10B981;
+  --event-jovens: #7C3AED;
+  --event-intercessao: #06B6D4;
+  --event-geral: #EC4899;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 30px var(--glow-primary);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --fc-button-bg-color: #FFFFFF;
+  --fc-button-border-color: #E5E7EB;
+  --fc-button-hover-bg-color: #F3F4F6;
+  --fc-button-hover-border-color: #D1D5DB;
+  --fc-button-active-bg-color: #2563EB;
+  --fc-button-active-border-color: #2563EB;
+  --fc-page-bg-color: #FFFFFF;
+  --fc-neutral-bg-color: #F9FAFB;
+  --fc-neutral-text-color: #4B5563;
+  --fc-border-color: #E5E7EB;
+  --fc-daygrid-event-dot-width: 0;
+  --fc-event-text-color: #FFFFFF;
+  --fc-event-bg-color: #2563EB;
+  --fc-today-bg-color: rgba(37, 99, 235, 0.05);
+  --fc-event-border-color: transparent;
+}
+
+[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+
+  --page: #0F0F14;
+  --card: #1A1A24;
+  --sidebar: #14141C;
+  --primary: #C084FC;
+  --primary-hover: #A855F7;
+  --border: #2A2A3A;
+  --text-main: #F1F1F1;
+  --text-secondary: #8B8B9E;
+  --success: #10B981;
+  --danger: #EF4444;
+  --accent-warm: #F59E0B;
+  --accent-cool: #38BDF8;
+  --hover-bg: #1F1F2E;
+
+  --glow-primary: rgba(192, 132, 252, 0.15);
+  --glow-warm: rgba(245, 158, 11, 0.15);
+
+  --event-culto: #F59E0B;
+  --event-escola: #10B981;
+  --event-jovens: #C084FC;
+  --event-intercessao: #38BDF8;
+  --event-geral: #F472B6;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 30px var(--glow-primary);
+
+  --fc-button-bg-color: #1A1A24;
+  --fc-button-border-color: #2A2A3A;
+  --fc-button-hover-bg-color: #1F1F2E;
+  --fc-button-hover-border-color: #2A2A3A;
+  --fc-button-active-bg-color: #C084FC;
+  --fc-button-active-border-color: #C084FC;
+  --fc-page-bg-color: #0F0F14;
+  --fc-neutral-bg-color: #14141C;
+  --fc-neutral-text-color: #8B8B9E;
+  --fc-border-color: #2A2A3A;
+  --fc-daygrid-event-dot-width: 0;
+  --fc-event-text-color: #FFFFFF;
+  --fc-event-bg-color: #C084FC;
+  --fc-today-bg-color: rgba(192, 132, 252, 0.06);
+  --fc-event-border-color: transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-secondary);
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.icon-svg,
+.nav-icon,
+.btn-icon,
+.toast-icon,
+.input-icon {
+  @apply w-5 h-5 inline-flex align-middle;
 }

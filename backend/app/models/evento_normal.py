@@ -16,6 +16,7 @@ class EventoNormal(db.Model):
     id = Column(Integer, primary_key=True)
     titulo = Column(String, nullable=False)
     descricao = Column(String, nullable=True)
+    cor = Column(String(7), nullable=True, default=None)
     data_inicio = Column(DateTime, nullable=False)
     data_fim = Column(DateTime, nullable=True)
     status = Column(SAEnum(EventoStatus), nullable=False, default=EventoStatus.ATIVO)

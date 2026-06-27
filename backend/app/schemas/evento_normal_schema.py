@@ -17,6 +17,7 @@ class EventoNormalCreateSchema(Schema):
 
     titulo = fields.Str(required=True, validate=validate.Length(min=1, max=200))
     descricao = fields.Str(load_default=None, allow_none=True)
+    cor = fields.Str(load_default=None, allow_none=True, validate=validate.Regexp(r'^#[0-9A-Fa-f]{6}$'))
     data_inicio = fields.Str(required=True)   # validado em @validates
     data_fim = fields.Str(load_default=None, allow_none=True)
     criado_por = fields.Int(required=True, strict=True)
@@ -37,6 +38,7 @@ class EventoNormalUpdateSchema(Schema):
 
     titulo = fields.Str(validate=validate.Length(min=1, max=200))
     descricao = fields.Str(allow_none=True)
+    cor = fields.Str(allow_none=True, validate=validate.Regexp(r'^#[0-9A-Fa-f]{6}$'))
     data_inicio = fields.Str()
     data_fim = fields.Str(allow_none=True)
     status = fields.Str(validate=validate.OneOf(['ativo', 'cancelado']))
