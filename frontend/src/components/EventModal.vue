@@ -14,12 +14,10 @@
           </button>
         </div>
 
-        <!-- Error -->
         <div v-if="error && !evento" class="p-6">
           <p class="text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20">{{ error }}</p>
         </div>
 
-        <!-- Loading -->
         <div v-else-if="loading && !evento" class="p-6">
             <div class="flex items-center justify-center gap-2 text-text-secondary">
               <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -30,10 +28,8 @@
             </div>
         </div>
 
-        <!-- Content with expansion animation -->
         <div v-else-if="evento" ref="expandRef" class="expand-wrapper" :class="{ 'expand-done': contentVisible }">
           <div class="p-6 space-y-5" :class="{ 'content-hidden': !contentVisible, 'content-stagger': contentVisible }">
-          <!-- Descrição -->
           <div v-if="evento.descricao" class="space-y-1.5">
               <strong class="flex items-center gap-2 text-[1.05rem] font-semibold text-text-main">
                 <DocumentTextIcon class="w-5 h-5 text-primary" aria-hidden="true" />Descrição
@@ -41,7 +37,6 @@
               <p class="pl-7 m-0 text-text-secondary leading-relaxed">{{ evento.descricao }}</p>
             </div>
 
-          <!-- Se for evento normal -->
           <template v-if="tipo === 'normal'">
             <div class="space-y-1">
               <strong class="flex items-center gap-2 text-[1.05rem] font-semibold text-text-main">
@@ -62,7 +57,6 @@
             </div>
           </template>
 
-          <!-- Se for evento recorrente -->
           <template v-if="tipo === 'recorrente'">
             <div class="grid grid-cols-2 gap-4">
               <div class="space-y-1">
@@ -89,7 +83,6 @@
               <div class="pl-7 text-text-secondary">{{ evento.ativo ? 'Sim' : 'Não' }}</div>
             </div>
 
-            <!-- Próximas ocorrências -->
             <div class="pt-4 border-t border-border space-y-2">
               <strong class="flex items-center gap-2 text-[1.05rem] font-semibold text-text-main">
                 <CalendarDaysIcon class="w-5 h-5 text-purple-400" aria-hidden="true" />Próximos Eventos (30 dias)
@@ -102,7 +95,6 @@
               <p v-else class="pl-7 m-0 text-text-secondary italic">Nenhuma ocorrência futura encontrada.</p>
             </div>
 
-            <!-- Exceções -->
             <div class="pt-4 border-t border-border space-y-2">
               <strong class="flex items-center gap-2 text-[1.05rem] font-semibold text-text-main">
                 <ExclamationTriangleIcon class="w-5 h-5 text-amber-400" aria-hidden="true" />Exceções
@@ -127,7 +119,6 @@
             <div class="pl-7 text-text-secondary">{{ creatorName || 'Carregando...' }}</div>
           </div>
 
-          <!-- Botões de ação (apenas admin) -->
           <div class="flex flex-wrap gap-3 mt-8 pt-4 justify-end" v-if="isAdmin">
             <button 
               v-if="tipo === 'recorrente'" 

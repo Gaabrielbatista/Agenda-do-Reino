@@ -5,6 +5,11 @@ export const isDark = ref(true);
 function applyTheme(dark: boolean) {
   const html = document.documentElement;
   html.setAttribute('data-theme', dark ? 'dark' : 'light');
+  if (dark) {
+    html.classList.add('dark');
+  } else {
+    html.classList.remove('dark');
+  }
 }
 
 export function toggleTheme() {

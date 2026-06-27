@@ -297,7 +297,6 @@ watch(() => props.visible, (newVal) => {
 </script>
 
 <style scoped>
-/* Herda color-scheme do :root (dark) / [data-theme="light"] (light) */
 .color-scheme-dark {
   color-scheme: inherit;
 }

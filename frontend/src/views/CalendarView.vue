@@ -1,14 +1,12 @@
 <template>
   <div class="flex h-screen w-screen overflow-hidden bg-page text-text-main">
     
-    <!-- Mobile Overlay for Sidebar -->
     <div 
       v-if="!isCollapsedMobile" 
       class="fixed inset-0 bg-black/50 z-30 md:hidden" 
       @click="toggleSidebarMobile"
     ></div>
 
-    <!-- Sidebar -->
     <aside 
       :class="[
         'absolute md:static top-0 left-0 h-full bg-sidebar border-r border-border z-40 transition-all duration-300 ease-in-out',
@@ -18,12 +16,10 @@
       ]"
     >
       <div class="flex justify-end p-4">
-        <!-- Desktop Toggle -->
         <button class="hidden md:block text-text-secondary hover:text-text-main" @click="toggleSidebarDesktop">
           <Bars3Icon v-if="isCollapsedDesktop" class="w-6 h-6" aria-hidden="true" />
           <ChevronLeftIcon v-else class="w-6 h-6" aria-hidden="true" />
         </button>
-        <!-- Mobile Close -->
         <button class="md:hidden text-text-secondary hover:text-text-main" @click="toggleSidebarMobile">
           <ChevronLeftIcon class="w-6 h-6" aria-hidden="true" />
         </button>
@@ -42,16 +38,16 @@
       </nav>
 
       <div class="p-3 border-t border-border flex flex-col gap-1.5">
-        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-text-main hover:bg-card rounded-lg transition-colors whitespace-nowrap" @click="goToProfile">
+        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-text-main hover:bg-hover-bg rounded-lg transition-colors whitespace-nowrap" @click="goToProfile">
           <UserCircleIcon class="w-6 h-6 shrink-0" aria-hidden="true" />
           <span v-if="!isCollapsedDesktop || !isDesktop">Perfil</span>
         </button>
-        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-text-secondary hover:text-text-main hover:bg-card rounded-lg transition-colors whitespace-nowrap" @click="toggleTheme">
+        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-text-secondary hover:text-text-main hover:bg-hover-bg rounded-lg transition-colors whitespace-nowrap" @click="toggleTheme">
           <SunIcon v-if="isDark" class="w-6 h-6 shrink-0" aria-hidden="true" />
           <MoonIcon v-else class="w-6 h-6 shrink-0" aria-hidden="true" />
           <span v-if="!isCollapsedDesktop || !isDesktop">{{ isDark ? 'Tema Claro' : 'Tema Escuro' }}</span>
         </button>
-        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-text-main hover:bg-card rounded-lg transition-colors whitespace-nowrap" @click="logout">
+        <button class="flex items-center gap-3 w-full px-3 py-2.5 text-text-main hover:bg-hover-bg rounded-lg transition-colors whitespace-nowrap" @click="logout">
           <ArrowRightOnRectangleIcon class="w-6 h-6 shrink-0" aria-hidden="true" />
           <span v-if="!isCollapsedDesktop || !isDesktop">Sair</span>
         </button>
@@ -59,8 +55,7 @@
     </aside>
 
     <main class="flex-1 flex flex-col min-w-0">
-      <!-- Top Bar -->
-      <header class="flex items-center justify-between px-4 sm:px-8 py-4 bg-page border-b border-border">
+      <header class="flex items-center justify-between px-4 sm:px-8 py-4 bg-card border-b border-border">
         <div class="flex items-center gap-4">
           <button class="md:hidden text-text-secondary hover:text-text-main" @click="toggleSidebarMobile">
             <Bars3Icon class="w-6 h-6" aria-hidden="true" />
@@ -85,7 +80,6 @@
         </div>
       </header>
 
-      <!-- Calendar -->
       <div class="flex-1 px-0 sm:px-2 pb-0 sm:pb-2 overflow-hidden flex flex-col">
         <div class="bg-card flex-1 rounded-xl shadow-lg border border-border overflow-hidden flex flex-col">
           <div class="flex items-center justify-between px-3 sm:px-5 py-2.5 border-b border-border min-h-[52px]">
@@ -172,7 +166,6 @@ const authStore = useAuthStore()
 const fullCalendar = ref<any>(null)
 const calendarContainerRef = ref<HTMLElement | null>(null)
 
-// Sidebar state
 const isCollapsedDesktop = ref(true)
 const isCollapsedMobile = ref(true)
 const isDesktop = ref(true)
@@ -198,7 +191,6 @@ onUnmounted(() => {
 const currentView = ref('dayGridMonth')
 const isAdmin = computed(() => authStore.user?.tipo === 'admin')
 
-// Modals
 const modalVisible = ref(false)
 const selectedEventId = ref<number | null>(null)
 const selectedEventType = ref<'normal' | 'recorrente' | null>(null)
@@ -207,7 +199,6 @@ const formModalVisible = ref(false)
 const editingEventId = ref<number | null>(null)
 const editingEventType = ref<'normal' | 'recorrente' | null>(null)
 
-// Actions
 const openCreateModal = () => {
   editingEventId.value = null
   editingEventType.value = null
@@ -465,16 +456,7 @@ const calendarOptions: CalendarOptions = {
     el.style.setProperty('--evt-g', String(_origG ?? rgb.g))
     el.style.setProperty('--evt-b', String(_origB ?? rgb.b))
 
-    // el.style.background = `linear-gradient(135deg, ${lightColor}, ${bgColor})`
-    // el.style.borderColor = 'transparent'
     el.style.borderRadius = '12px'
-    el.style.padding = '1.5rem 2rem'
-    // el.style.color = info.event.textColor || getContrastingTextColor()
-    el.style.boxShadow = `
-      inset 0 0 4px rgba(255,255,255,0.2),
-      0 0 12px 4px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.5),
-      0 0 6px rgba(255,255,255,0.25)
-    `
     el.style.position = 'relative'
     el.style.zIndex = '0'
     el.style.transition = 'transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, filter 0.28s ease'
@@ -531,8 +513,6 @@ const logout = () => {
 </script>
 
 <style scoped>
-/* FullCalendar - Estilos Customizados para o Redesign Dark */
-
 :deep(.fc-theme-standard td), 
 :deep(.fc-theme-standard th),
 :deep(.fc-theme-standard .fc-scrollgrid) {
@@ -634,10 +614,6 @@ const logout = () => {
   }
 }
 
-/* ═══════════════════════════════════════════
-   Custom Scrollbar — Dark Theme
-   ═══════════════════════════════════════════ */
-
 :deep(.fc-scroller) {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -667,19 +643,21 @@ const logout = () => {
   background: transparent;
 }
 
-/* ═══════════════════════════════════════════
-   Neon Glow Effect — 3-Layer Light System
-   ═══════════════════════════════════════════ */
-
-/* Event outer container */
 :deep(.fc-event) {
   border-radius: 12px !important;
   overflow: visible !important;
   transition: 0.28s;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
 }
 
-/* Inner wrapper — time on top, title below */
+.dark :deep(.fc-event) {
+  box-shadow:
+    inset 0 0 4px rgba(255, 255, 255, 0.2),
+    0 0 12px 4px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.15),
+    0 0 6px rgba(255, 255, 255, 0.1) !important;
+}
+
 :deep(.fc-event-main) {
   display: flex !important;
   flex-direction: column !important;
@@ -687,7 +665,6 @@ const logout = () => {
   gap: 0.2rem;
 }
 
-/* Fix FC's border-radius reset for middle events in month view */
 :deep(.fc-daygrid-block-event:not(.fc-event-start)) {
   border-top-left-radius: 12px !important;
   border-bottom-left-radius: 12px !important;
@@ -700,36 +677,45 @@ const logout = () => {
   border-bottom-right-radius: 12px !important;
 }
 
-/* Layer 2: Ambient glow via pseudo-element — event-colored */
 :deep(.fc-event::before) {
   content: '';
   position: absolute;
   inset: -6px;
   border-radius: 16px;
   background: radial-gradient(ellipse, rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.4), transparent 65%);
-  opacity: 0.6;
+  opacity: 0;
   filter: blur(10px);
   z-index: -1;
   pointer-events: none;
   transition: opacity 0.28s ease, filter 0.28s ease;
 }
 
-/* ═══ Hover ═══ */
+.dark :deep(.fc-event::before) {
+  opacity: 0.6;
+}
+
 :deep(.fc-event:hover) {
   transform: scale(1.04) !important;
   filter: brightness(1.06) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+.dark :deep(.fc-event:hover) {
   box-shadow:
     0 0 12px 4px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.4),
     0 0 24px 8px rgba(var(--evt-r), var(--evt-g), var(--evt-b), 0.2),
-    0 0 40px 12px rgba(255,255,255,0.1) !important;
+    0 0 40px 12px rgba(255, 255, 255, 0.1) !important;
 }
 
 :deep(.fc-event:hover::before) {
+  opacity: 0 !important;
+}
+
+.dark :deep(.fc-event:hover::before) {
   opacity: 0.7 !important;
   filter: blur(12px) !important;
 }
 
-/* ═══ Typography ═══ */
 :deep(.fc-event-title) {
   font-weight: 600;
   font-size: 1rem;
@@ -753,7 +739,6 @@ const logout = () => {
   gap: 0.2rem;
 }
 
-/* Clock icon inside event time */
 :deep(.evt-clock-icon) {
   display: inline-block;
   vertical-align: middle;
@@ -769,7 +754,6 @@ const logout = () => {
   min-height: 0 !important;
 }
 
-/* Week / day view — timegrid event */
 :deep(.fc-timegrid-event) {
   border-radius: 8px !important;
   padding: 0.7rem 1rem !important;
@@ -802,7 +786,6 @@ const logout = () => {
   height: 60px !important;
 }
 
-/* Allow day-cell containers to show the event glow */
 :deep(.fc-day) {
   overflow: visible !important;
 }
@@ -820,7 +803,6 @@ const logout = () => {
   border-radius: 8px !important;
 }
 
-/* ═══ Responsive — smaller screens ═══ */
 @media (max-width: 640px) {
   :deep(.fc-event-title) {
     font-size: 0.85rem;
@@ -841,7 +823,6 @@ const logout = () => {
   }
 }
 
-/* "+X mais" link */
 :deep(.fc-daygrid-more-link) {
   color: var(--primary);
   font-size: 0.85rem;
@@ -855,7 +836,6 @@ const logout = () => {
   text-decoration: none;
 }
 
-/* Popover do "+X mais" */
 :deep(.fc-popover) {
   background-color: var(--card) !important;
   border: 1px solid var(--border) !important;
@@ -870,5 +850,37 @@ const logout = () => {
 }
 :deep(.fc-popover-body) {
   padding: 0.5rem !important;
+}
+
+:root[data-theme="light"] header .bg-card.rounded-full.border {
+  background-color: #2D2D2F !important;    /* fundo levemente mais claro que a top bar */
+  border-color: #4A4A4C !important;        /* borda sutil para destacar */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important; /* sombra para profundidade */
+}
+
+:root[data-theme="light"] header .bg-card.rounded-full .text-text-main {
+  color: #F1F1F1 !important;
+}
+
+:root[data-theme="light"] header .bg-card.rounded-full .bg-primary\/20 {
+  background-color: rgba(192, 132, 252, 0.25) !important;
+}
+:root[data-theme="light"] header .bg-card.rounded-full .text-primary {
+  color: #C084FC !important;
+}
+
+:root[data-theme="light"] header .bg-card.rounded-full .text-primary {
+  color: #C084FC !important;
+}
+
+:root[data-theme="light"] header .bg-card.rounded-full .text-sm.font-medium {
+  color: #F1F1F1 !important;
+}
+
+:root[data-theme="light"] header .bg-card.rounded-full .bg-emerald-500\/20 {
+  background-color: rgba(16, 185, 129, 0.2) !important;
+}
+:root[data-theme="light"] header .bg-card.rounded-full .text-emerald-400 {
+  color: #34D399 !important;
 }
 </style>

@@ -1,42 +1,45 @@
-/* ============================================
-   "Luz na Escuridão" — Light Theme Overrides
-   ============================================ */
-
 :root[data-theme="light"] {
   color-scheme: light;
-  --page: #F8F7F4;
+
+  --page: #F3F4F6;
   --card: #FFFFFF;
-  --sidebar: #F3F1ED;
-  --primary: #7C3AED;
-  --primary-hover: #6D28D9;
+  --sidebar: #E9ECEF;
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
   --accent-warm: #D97706;
   --accent-cool: #0284C7;
   --success: #059669;
   --danger: #DC2626;
-  --border: #E5E2DC;
-  --text-main: #1A1A2E;
-  --text-secondary: #6B6B80;
-  --hover-bg: #EDEAF5;
+  --border: #E5E7EB;
+  --text-main: #111827;
+  --text-secondary: #6B7280;
+  --hover-bg: #F3F4F6;
 
-  --glow-primary: rgba(124, 58, 237, 0.08);
+  --glow-primary: rgba(37, 99, 235, 0.08);
   --glow-warm: rgba(217, 119, 6, 0.08);
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 20px rgba(0,0,0,0.08);
   --shadow-glow: 0 0 30px var(--glow-primary);
 
-  --fc-page-bg-color: #F8F7F4;
-  --fc-neutral-bg-color: #F3F1ED;
-  --fc-neutral-text-color: #6B6B80;
-  --fc-border-color: #E5E2DC;
+  --fc-page-bg-color: #FFFFFF;
+  --fc-neutral-bg-color: #F9FAFB;
+  --fc-neutral-text-color: #6B7280;
+  --fc-border-color: #E5E7EB;
   --fc-button-bg-color: #FFFFFF;
-  --fc-button-border-color: #E5E2DC;
-  --fc-button-hover-bg-color: #F3F1ED;
-  --fc-button-hover-border-color: #D4D0C8;
-  --fc-button-active-bg-color: #7C3AED;
-  --fc-button-active-border-color: #7C3AED;
-  --fc-today-bg-color: rgba(124, 58, 237, 0.04);
-  --fc-event-bg-color: #7C3AED;
-  --fc-event-text-color: #1A1A2E;
+  --fc-button-border-color: #D1D5DB;
+  --fc-button-hover-bg-color: #F3F4F6;
+  --fc-button-hover-border-color: #9CA3AF;
+  --fc-button-active-bg-color: #2563EB;
+  --fc-button-active-border-color: #2563EB;
+  --fc-today-bg-color: rgba(37, 99, 235, 0.05);
+  --fc-event-bg-color: #2563EB;
+  --fc-event-text-color: #FFFFFF;
+}
+
+:root[data-theme="light"] .fc-scrollgrid,
+:root[data-theme="light"] .fc-theme-standard td,
+:root[data-theme="light"] .fc-theme-standard th {
+  border-color: #E5E7EB;
 }

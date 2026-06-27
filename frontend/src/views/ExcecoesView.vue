@@ -11,14 +11,12 @@
         </div>
       </div>
 
-      <!-- Informações do Evento Recorrente -->
       <div class="event-details" v-if="evento">
         <p><strong>Recorrência:</strong> {{ diasSemana[evento.dia_semana] }} às {{ evento.hora_inicio }} <span v-if="evento.hora_fim">até {{ evento.hora_fim }}</span></p>
         <p v-if="evento.descricao"><strong>Descrição:</strong> {{ evento.descricao }}</p>
       </div>
 
       <div class="main-layout">
-        <!-- Listagem de Exceções Existentes -->
         <div class="exceptions-list-section">
           <h3>Exceções Configuradas</h3>
           
@@ -57,7 +55,6 @@
           </div>
         </div>
 
-        <!-- Formulário para Criar Nova Exceção (Apenas Admin) -->
         <div class="form-section" v-if="isAdmin && evento">
           <h3>Nova Exceção</h3>
           
@@ -191,7 +188,6 @@ const loadEvent = async () => {
   try {
     const { data } = await api.get(`/eventos/recorrentes/${eventId}`)
     evento.value = data
-    // Inicializa a hora padrão de início para conveniência
     form.value.hora_nova_inicio = data.hora_inicio
     form.value.hora_nova_fim = data.hora_fim || ''
   } catch (err) {
@@ -225,7 +221,6 @@ const formatNewDateTime = (exc: any) => {
     const d = new Date(exc.data_nova)
     output += d.toLocaleDateString('pt-BR')
   } else {
-    // Mesma data do original
     const d = new Date(exc.data_original)
     output += d.toLocaleDateString('pt-BR')
   }
@@ -239,15 +234,12 @@ const formatNewDateTime = (exc: any) => {
 const validateOriginalDateWeekday = () => {
   if (!form.value.data_original_date || !evento.value) return true
   
-  // Date input está em YYYY-MM-DD local, criamos um objeto data correspondente
   const parts = form.value.data_original_date.split('-')
   const year = parseInt(parts[0])
   const month = parseInt(parts[1]) - 1
   const day = parseInt(parts[2])
   const d = new Date(year, month, day)
   
-  // JS weekday: 0=Domingo, 1=Segunda, ..., 6=Sábado
-  // Backend weekday: 0=Segunda, 1=Terça, ..., 6=Domingo
   let jsDay = d.getDay()
   let backendDay = jsDay === 0 ? 6 : jsDay - 1
   
@@ -265,7 +257,6 @@ const handleSubmit = async () => {
   }
 
   try {
-    // Monta a data_original adicionando o horário de início original do evento
     const dataOriginalStr = `${form.value.data_original_date}T${evento.value.hora_inicio}:00`
     const tipoPayload = form.value.tipo === 'cancelamento' ? 'CANCELAMENTO' : 'REMARCACAO'
     const payload: any = {
@@ -288,7 +279,6 @@ const handleSubmit = async () => {
 
     await api.post('/eventos/excecoes', payload)
 
-    // Sucesso, recarrega exceções e reseta form
     await loadExceptions()
     form.value.data_original_date = ''
     form.value.data_nova_date = ''
@@ -360,7 +350,6 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--primary);
 }
 
-/* Estilos Estruturais das Exceções */
 .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
 .back-btn { background: none; border: none; color: var(--text-main); cursor: pointer; }
 .back-btn svg { width: 1.2rem; height: 1.2rem; }

@@ -3,7 +3,6 @@
     <h1>{{ isEditing ? 'Editar Evento' : 'Novo Evento' }}</h1>
 
     <form @submit.prevent="handleSubmit">
-      <!-- Campos comuns -->
       <div class="form-group">
         <label for="titulo">Título *</label>
         <input id="titulo" v-model="form.titulo" type="text" required />
@@ -36,7 +35,6 @@
         </div>
       </div>
 
-      <!-- Campos para evento normal -->
       <template v-if="form.tipo === 'normal'">
         <div class="form-group">
           <label for="data_inicio">Data e Hora de Início *</label>
@@ -48,7 +46,6 @@
         </div>
       </template>
 
-      <!-- Campos para evento recorrente -->
       <template v-if="form.tipo === 'recorrente'">
         <div class="form-group">
           <label for="dia_semana">Dia da semana *</label>
@@ -113,17 +110,14 @@ const form = ref({
   titulo: '',
   descricao: '',
   cor: '#3B82F6',
-  // normal
   data_inicio: '',
   data_fim: '',
-  // recorrente
   dia_semana: 0,
   hora_inicio: '',
   hora_fim: '',
   ativo: true
 })
 
-// Carrega dados se for edição
 const loadEvent = async () => {
   if (!isEditing.value || !eventType.value || !eventId.value) return
   try {
@@ -166,8 +160,6 @@ const handleSubmit = async () => {
       if (!form.value.data_inicio) throw new Error('Data/hora de início é obrigatória')
       payload.data_inicio = form.value.data_inicio
       payload.data_fim = form.value.data_fim || null
-      // criado_por será obtido do token pelo backend
-
       if (isEditing.value && eventType.value === 'normal') {
         await api.put(`/eventos/normais/${eventId.value}`, payload)
       } else {

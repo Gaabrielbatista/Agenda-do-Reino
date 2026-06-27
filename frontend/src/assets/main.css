@@ -9,24 +9,74 @@
   }
 }
 
-/* ============================================
-   "Luz na Escuridão" — Design System
-   Dark theme (default, always active)
-   ============================================ */
 :root {
+  color-scheme: light;
+
+  --page: #F9FAFB;
+  --card: #FFFFFF;
+  --sidebar: #FFFFFF;
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
+  --border: #E5E7EB;
+  --text-main: #111827;
+  --text-secondary: #4B5563;
+  --success: #10B981;
+  --danger: #EF4444;
+  --accent-warm: #F59E0B;
+  --accent-cool: #06B6D4;
+  --hover-bg: #F3F4F6;
+
+  --glow-primary: rgba(37, 99, 235, 0.05);
+  --glow-warm: rgba(245, 158, 11, 0.05);
+
+  --event-culto: #2563EB;
+  --event-escola: #10B981;
+  --event-jovens: #7C3AED;
+  --event-intercessao: #06B6D4;
+  --event-geral: #EC4899;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 30px var(--glow-primary);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --fc-button-bg-color: #FFFFFF;
+  --fc-button-border-color: #E5E7EB;
+  --fc-button-hover-bg-color: #F3F4F6;
+  --fc-button-hover-border-color: #D1D5DB;
+  --fc-button-active-bg-color: #2563EB;
+  --fc-button-active-border-color: #2563EB;
+  --fc-page-bg-color: #FFFFFF;
+  --fc-neutral-bg-color: #F9FAFB;
+  --fc-neutral-text-color: #4B5563;
+  --fc-border-color: #E5E7EB;
+  --fc-daygrid-event-dot-width: 0;
+  --fc-event-text-color: #FFFFFF;
+  --fc-event-bg-color: #2563EB;
+  --fc-today-bg-color: rgba(37, 99, 235, 0.05);
+  --fc-event-border-color: transparent;
+}
+
+[data-theme="dark"],
+.dark {
   color-scheme: dark;
+
   --page: #0F0F14;
   --card: #1A1A24;
   --sidebar: #14141C;
   --primary: #C084FC;
   --primary-hover: #A855F7;
-  --accent-warm: #F59E0B;
-  --accent-cool: #38BDF8;
-  --success: #10B981;
-  --danger: #EF4444;
   --border: #2A2A3A;
   --text-main: #F1F1F1;
   --text-secondary: #8B8B9E;
+  --success: #10B981;
+  --danger: #EF4444;
+  --accent-warm: #F59E0B;
+  --accent-cool: #38BDF8;
   --hover-bg: #1F1F2E;
 
   --glow-primary: rgba(192, 132, 252, 0.15);
@@ -38,61 +88,11 @@
   --event-intercessao: #38BDF8;
   --event-geral: #F472B6;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.3);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
   --shadow-glow: 0 0 30px var(--glow-primary);
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-}
-
-/* --- Ambient background gradient --- */
-.bg-ambient {
-  background: radial-gradient(ellipse at 50% 0%, #1A1A24 0%, #0F0F14 70%);
-}
-
-/* --- Glow utilities --- */
-.glow-primary {
-  box-shadow: 0 0 30px var(--glow-primary);
-}
-
-.glow-warm {
-  box-shadow: 0 0 30px var(--glow-warm);
-}
-
-/* --- Stained glass divider --- */
-.divider-vitral {
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--primary) 20%,
-    var(--accent-warm) 50%,
-    var(--primary) 80%,
-    transparent
-  );
-  opacity: 0.3;
-}
-
-/* --- Card hover glow --- */
-.card-glow {
-  transition: box-shadow 0.3s ease;
-}
-
-.card-glow:hover {
-  box-shadow: 0 0 30px var(--glow-primary);
-}
-
-/* --- Sidebar item active gradient --- */
-.sidebar-item-active {
-  background: linear-gradient(to right, rgba(192, 132, 252, 0.12), transparent);
-  border-left: 2px solid var(--primary);
-}
-
-/* --- FullCalendar themed variables --- */
-:root {
   --fc-button-bg-color: #1A1A24;
   --fc-button-border-color: #2A2A3A;
   --fc-button-hover-bg-color: #1F1F2E;
@@ -104,15 +104,11 @@
   --fc-neutral-text-color: #8B8B9E;
   --fc-border-color: #2A2A3A;
   --fc-daygrid-event-dot-width: 0;
-  --fc-event-text-color: #ffffff;
+  --fc-event-text-color: #FFFFFF;
   --fc-event-bg-color: #C084FC;
   --fc-today-bg-color: rgba(192, 132, 252, 0.06);
   --fc-event-border-color: transparent;
 }
-
-/* ═══════════════════════════════════════════
-   Custom Scrollbar — Global
-   ═══════════════════════════════════════════ */
 
 *::-webkit-scrollbar {
   width: 6px;
@@ -143,7 +139,6 @@
   scrollbar-color: var(--border) transparent;
 }
 
-/* Icon classes */
 .icon-svg,
 .nav-icon,
 .btn-icon,
